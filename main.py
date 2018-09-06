@@ -102,9 +102,9 @@ def detect_contour(src):
                 is_stop = matching_sign(src[y:y + h, x:x + w], "./template/temp_stop.jpg")
     
     if (is_stop == True):
-        return ("stop,")
+        return ("stop,null,null,")
     else :
-        return ("null,")
+        return ("null,slow,over,")
 
 def camera(video):
     is_read, frame = video.read()
