@@ -3,6 +3,8 @@ import RPi.GPIO as GPIO
 import cv2
 import numpy as np
 
+KEY_ESC=27
+
 FUEL_PIN = 26
 L_PIN = 20
 R_PIN = 21
@@ -15,9 +17,9 @@ MAX_LENGTH = 10
 #refuel listener
 def refuelListener():
     if (GPIO.input(FUEL_PIN) == GPIO.LOW):
-        return ("refuel,")
+        return ("fuel,")
     else :
-        return ("null,")
+        return (",")
 ##
 
 #turn listener
@@ -48,7 +50,7 @@ def turnListener(speed):
             elif (GPIO.input(R_PIN) == GPIO.LOW):
                 return ("right,")
     
-    return ("null,")
+    return (",")
 ##
 
 #sign listener
@@ -101,13 +103,15 @@ def detect_contour(src):
                 is_stop = matching_sign(src[y:y + h, x:x + w], "./template/temp_stop.jpg")
     
     if (is_stop == True):
-        return ("stop,null,null,")
+        return ("stop,,,")
     else :
-        return ("null,null,null,")
+        return (",,,")
 
 def camera(video):
     is_read, frame = video.read()
+    
     if frame is not None:
+        cv2.imshow("hoge", frame)
         return (detect_contour(frame))
 ##
 
@@ -118,27 +122,30 @@ def main():
     GPIO.setup(FUEL_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(L_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(R_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    
     speed = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 0]
     
     prev_string = ""
     
     video = cv2.VideoCapture(0)
     
-    try:
-        while True:
-            send_string = ""
-            send_string += refuelListener()
-            send_string += turnListener(speed)
-            send_string += camera(video)
-            
-            if prev_string != send_string:
-                prev_string = send_string
-                print(send_string)
-                
-            cv2.waitKey(1)
-    except :
-        pass
+    cv2.namedWindow('hoge', cv2.WINDOW_NORMAL)
     
+    while True:
+        state_string = ""
+        state_string += refuelListener()
+        state_string += turnListener(speed)
+        state_string += camera(video)
+        
+        if prev_string != state_string:
+            prev_string = state_string
+            print(state_string)
+        
+        k = cv2.waitKey(1)
+        if k == KEY_ESC:
+            cv2.destroyAllWindows()
+            break
+
     video.release()        
     GPIO.cleanup()
     
