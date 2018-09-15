@@ -2,7 +2,6 @@ import obd
 import RPi.GPIO as GPIO
 import cv2
 import numpy as np
-from bluetooth import *
 
 FUEL_PIN = 26
 L_PIN = 20
@@ -13,7 +12,7 @@ SWITCH_PIN = 16
 
 MAX_LENGTH = 10
 
-#refuel detector
+#refuel listener
 def refuelListener():
     if (GPIO.input(FUEL_PIN) == GPIO.LOW):
         return ("refuel,")
@@ -21,7 +20,7 @@ def refuelListener():
         return ("null,")
 ##
 
-#turn detecter
+#turn listener
 def speedLog(speed):
     
     #con = obd.OBD()
@@ -52,7 +51,7 @@ def turnListener(speed):
     return ("null,")
 ##
 
-#sign detector
+#sign listener
 def matching_sign(image, temp_path):
     temp = cv2.imread(temp_path, 0)
     img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -104,7 +103,7 @@ def detect_contour(src):
     if (is_stop == True):
         return ("stop,null,null,")
     else :
-        return ("null,slow,over,")
+        return ("null,null,null,")
 
 def camera(video):
     is_read, frame = video.read()
@@ -123,20 +122,7 @@ def main():
     
     prev_string = ""
     
-    uuid = "a11f255d-ea48-5aa2-1a34-3b1f7a762d13"
-    
     video = cv2.VideoCapture(0)
-    ss = BluetoothSocket(RFCOMM)
-    
-    ss.bind(("", PORT_ANY))
-    ss.listen(1)
-    advertise_service(ss,"safetyPlus", service_id = uuid,
-                      service_classes = [uuid, SERIAL_PORT_CLASS],
-                      profiles = [SERIAL_PORT_PROFILE])
-    
-    print ("waiting connect")
-    sock, ad = ss.accept()
-    print ("connected")
     
     try:
         while True:
@@ -148,17 +134,11 @@ def main():
             if prev_string != send_string:
                 prev_string = send_string
                 print(send_string)
-                try:
-                    sock.send(send_string)
-                except :
-                    pass
                 
             cv2.waitKey(1)
     except :
         pass
-
-    ss.close()
-    sock.close()
+    
     video.release()        
     GPIO.cleanup()
     
