@@ -68,8 +68,7 @@ def matching_sign(image, temp_path):
     temp = cv2.GaussianBlur(temp, (5, 5), 0)
     result = cv2.matchTemplate(img, temp, cv2.TM_CCOEFF_NORMED)
     threshold = 0.6
-    loc = np.where(result >= threshold)
-    
+    loc = np.where(result >= threshold) 
     flag = False
     for top_left in zip(*loc[::-1]):
         flag = True
@@ -111,9 +110,10 @@ def camera(video):
     is_read, frame = video.read()
     
     if frame is not None:
-        cv2.imshow("hoge", frame)
+        cv2.imshow('video', frame)
         return (detect_contour(frame))
 ##
+    
 
 def main():
     
@@ -129,8 +129,13 @@ def main():
     
     video = cv2.VideoCapture(0)
     
-    cv2.namedWindow('hoge', cv2.WINDOW_NORMAL)
+    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
+    cv2.namedWindow('video', cv2.WINDOW_NORMAL)
+    
+    stop_sign = cv2.imread('template/temp_stop.jpg')
+    cv2.imshow('drive', stop_sign)
     while True:
         state_string = ""
         state_string += refuelListener()
