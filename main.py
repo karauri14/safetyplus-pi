@@ -113,7 +113,15 @@ def camera(video):
         cv2.imshow('video', frame)
         return (detect_contour(frame))
 ##
+
+def windowInit():
+    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
+    cv2.namedWindow('video', cv2.WINDOW_NORMAL)
+    
+    background = cv2.imread('./img/background.png')
+    cv2.imshow('drive', background)
 
 def main():
     
@@ -129,13 +137,8 @@ def main():
     
     video = cv2.VideoCapture(0)
     
-    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
-    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    windowInit()
     
-    cv2.namedWindow('video', cv2.WINDOW_NORMAL)
-    
-    stop_sign = cv2.imread('template/temp_stop.jpg')
-    cv2.imshow('drive', stop_sign)
     while True:
         state_string = ""
         state_string += refuelListener()
