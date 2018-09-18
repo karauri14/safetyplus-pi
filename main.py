@@ -123,7 +123,8 @@ def windowInit():
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     
-    background = cv2.imread('./img/background.png')
+    bg_origin = cv2.imread('./img/background.png')
+    background = bg_origin
     
     stop_sign = cv2.imread('./img/ko/stop.png')
     stop_sign = cv2.resize(stop_sign, (SIGN_WIDTH, SIGN_HEIGHT))
