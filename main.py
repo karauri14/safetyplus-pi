@@ -127,31 +127,42 @@ def windowInit(lang):
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     
-    oil = cv2.imread('./img/oil/regular.png')
-    oil = cv2.resize(oil, (GUIDE_WIDTH, GUIDE_HEIGHT))
-    stop_sign = cv2.imread('./img/'+lang+'/stop.png')
-    stop_sign = cv2.resize(stop_sign, (SIGN_WIDTH, SIGN_HEIGHT))
-    slow_sign = cv2.imread('./img/'+lang+'/slow.png')
-    slow_sign = cv2.resize(slow_sign, (SIGN_WIDTH, SIGN_HEIGHT))
-    over_sign = cv2.imread('./img/'+lang+'/overtaking.png')
-    over_sign = cv2.resize(over_sign, (SIGN_WIDTH, SIGN_HEIGHT))
+    images = {}
+    images['OIL'] = cv2.imread('./img/oil/regular.png')
+    images['OIL'] = cv2.resize(images['OIL'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['LEFT'] = cv2.imread('./img/turn_left.png')
+    images['LEFT'] = cv2.resize(images['LEFT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['RIGHT'] = cv2.imread('./img/turn_right.png')
+    images['RIGHT'] = cv2.resize(images['RIGHT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['STOP'] = cv2.imread('./img/' + lang + '/stop.png')
+    images['STOP'] = cv2.resize(images['STOP'], (SIGN_WIDTH, SIGN_HEIGHT))
+    images['SLOW'] = cv2.imread('./img/' + lang + '/slow.png')
+    images['SLOW'] = cv2.resize(images['SLOW'], (SIGN_WIDTH, SIGN_HEIGHT))
+    images['OVER'] = cv2.imread('./img/' + lang + '/overtaking.png')
+    images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
     
-    return (stop_sign, slow_sign, over_sign, oil)
+    return (images)
 
-def makeImage(background, stop_sign, slow_sign, over_sign, oil, state_string):
+def makeImage(background, images, state_string):
     fuel, turn, stop, slow, over = state_string.split(',')
     
     if fuel == 'fuel':
-        pastePicture(background, oil, SIGN_WIDTH, TEXT_HEIGHT)
-    
+        pastePicture(background, images['OIL'], SIGN_WIDTH, TEXT_HEIGHT)
+        
+    if turn == 'left':
+        pastePicture(background, images['LEFT'], SIGN_WIDTH, TEXT_HEIGHT)
+        
+    if turn == 'right':
+        pastePicture(background, images['RIGHT'], SIGN_WIDTH, TEXT_HEIGHT)
+        
     if stop == 'stop':
-        pastePicture(background, stop_sign, 0, 0)
+        pastePicture(background, images['STOP'], 0, 0)
     
     if slow == 'slow':
-        pastePicture(background, slow_sign, 0, SIGN_HEIGHT)
+        pastePicture(background, images['SLOW'], 0, SIGN_HEIGHT)
     
     if over == 'over':
-        pastePicture(background, over_sign, 0, SIGN_HEIGHT * 2)
+        pastePicture(background, images['OVER'], 0, SIGN_HEIGHT * 2)
     
     cv2.imshow('drive', background)
 
@@ -189,7 +200,7 @@ def main():
     bg_origin = cv2.imread('./img/background.png')
     background = bg_origin.copy()
     
-    stop_sign, slow_sign, over_sign, oil = windowInit(lang)
+    images = windowInit(lang)
     
     while True:
         state_string = ""
@@ -201,7 +212,7 @@ def main():
             prev_string = state_string
             print(state_string)
             background = bg_origin.copy()
-            makeImage(background, stop_sign, slow_sign, over_sign, oil, state_string)
+            makeImage(background, images, state_string)
         
         k = cv2.waitKey(1)
         if k == KEY_ESC:
