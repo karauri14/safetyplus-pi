@@ -105,9 +105,9 @@ def detect_contour(src):
                 is_stop = matching_sign(src[y:y + h, x:x + w], "./template/temp_stop.jpg")
     
     if (is_stop == True):
-        return ("stop,,,")
+        return ("stop,,")
     else :
-        return (",,,")
+        return (",,")
 
 def camera(video):
     is_read, frame = video.read()
@@ -117,25 +117,33 @@ def camera(video):
         return (detect_contour(frame))
 ##
 
-def windowInit():
+def windowInit(lang):
     cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
     #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     
-    bg_origin = cv2.imread('./img/background.png')
-    background = bg_origin
-    
-    stop_sign = cv2.imread('./img/ko/stop.png')
+    stop_sign = cv2.imread('./img/'+lang+'/stop.png')
     stop_sign = cv2.resize(stop_sign, (SIGN_WIDTH, SIGN_HEIGHT))
-    slow_sign = cv2.imread('./img/ko/slow.png')
+    slow_sign = cv2.imread('./img/'+lang+'/slow.png')
     slow_sign = cv2.resize(slow_sign, (SIGN_WIDTH, SIGN_HEIGHT))
-    over_sign = cv2.imread('./img/ko/overtaking.png')
+    over_sign = cv2.imread('./img/'+lang+'/overtaking.png')
     over_sign = cv2.resize(over_sign, (SIGN_WIDTH, SIGN_HEIGHT))
     
-    pastePicture(background, stop_sign, 0, 0)
-    pastePicture(background, slow_sign, 0, SIGN_HEIGHT)
-    pastePicture(background, over_sign, 0, SIGN_HEIGHT * 2)
+    return (stop_sign, slow_sign, over_sign)
+
+def makeImage(background, stop_sign, slow_sign, over_sign, state_string):
+    fuel, turn, stop, slow, over = state_string.split(',')
+    
+    if stop == 'stop':
+        pastePicture(background, stop_sign, 0, 0)
+    
+    if slow == 'slow':
+        pastePicture(background, slow_sign, 0, SIGN_HEIGHT)
+    
+    if over == 'over':
+        pastePicture(background, over_sign, 0, SIGN_HEIGHT * 2)
+    
     cv2.imshow('drive', background)
 
 def pastePicture(background, src, x, y):
@@ -152,7 +160,7 @@ def pastePicture(background, src, x, y):
     srcFg = cv2.bitwise_and(src, src, mask = mask)
     dst = cv2.add(bg, srcFg)
     background[0 + y : row + y, 0 + x : col + x] = dst
-    
+        
 def main():
     
     GPIO.setmode(GPIO.BCM)
@@ -167,7 +175,12 @@ def main():
     
     video = cv2.VideoCapture(0)
     
-    windowInit()
+    lang = 'ko'
+    
+    bg_origin = cv2.imread('./img/background.png')
+    background = bg_origin.copy()
+    
+    stop_sign, slow_sign, over_sign = windowInit(lang)
     
     while True:
         state_string = ""
@@ -178,6 +191,9 @@ def main():
         if prev_string != state_string:
             prev_string = state_string
             print(state_string)
+        
+        background = bg_origin.copy()
+        makeImage(background, stop_sign, slow_sign, over_sign, state_string)
         
         k = cv2.waitKey(1)
         if k == KEY_ESC:
