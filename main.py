@@ -16,6 +16,10 @@ MAX_LENGTH = 10
 
 SIGN_WIDTH = 176
 SIGN_HEIGHT = 160
+TEXT_WIDTH = 800 - SIGN_WIDTH
+TEXT_HEIGHT = 105
+GUIDE_WIDTH = 800 - SIGN_WIDTH
+GUIDE_HEIGHT = 480 - TEXT_HEIGHT
 
 #refuel listener
 def refuelListener():
@@ -123,6 +127,8 @@ def windowInit(lang):
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     
+    oil = cv2.imread('./img/oil/regular.png')
+    oil = cv2.resize(oil, (GUIDE_WIDTH, GUIDE_HEIGHT))
     stop_sign = cv2.imread('./img/'+lang+'/stop.png')
     stop_sign = cv2.resize(stop_sign, (SIGN_WIDTH, SIGN_HEIGHT))
     slow_sign = cv2.imread('./img/'+lang+'/slow.png')
@@ -130,10 +136,13 @@ def windowInit(lang):
     over_sign = cv2.imread('./img/'+lang+'/overtaking.png')
     over_sign = cv2.resize(over_sign, (SIGN_WIDTH, SIGN_HEIGHT))
     
-    return (stop_sign, slow_sign, over_sign)
+    return (stop_sign, slow_sign, over_sign, oil)
 
-def makeImage(background, stop_sign, slow_sign, over_sign, state_string):
+def makeImage(background, stop_sign, slow_sign, over_sign, oil, state_string):
     fuel, turn, stop, slow, over = state_string.split(',')
+    
+    if fuel == 'fuel':
+        pastePicture(background, oil, SIGN_WIDTH, TEXT_HEIGHT)
     
     if stop == 'stop':
         pastePicture(background, stop_sign, 0, 0)
@@ -180,7 +189,7 @@ def main():
     bg_origin = cv2.imread('./img/background.png')
     background = bg_origin.copy()
     
-    stop_sign, slow_sign, over_sign = windowInit(lang)
+    stop_sign, slow_sign, over_sign, oil = windowInit(lang)
     
     while True:
         state_string = ""
@@ -191,9 +200,8 @@ def main():
         if prev_string != state_string:
             prev_string = state_string
             print(state_string)
-        
-        background = bg_origin.copy()
-        makeImage(background, stop_sign, slow_sign, over_sign, state_string)
+            background = bg_origin.copy()
+            makeImage(background, stop_sign, slow_sign, over_sign, oil, state_string)
         
         k = cv2.waitKey(1)
         if k == KEY_ESC:
