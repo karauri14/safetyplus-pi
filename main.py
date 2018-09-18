@@ -14,6 +14,9 @@ SWITCH_PIN = 16
 
 MAX_LENGTH = 10
 
+SIGN_WIDTH = 176
+SIGN_HEIGHT = 160
+
 #refuel listener
 def refuelListener():
     if (GPIO.input(FUEL_PIN) == GPIO.LOW):
@@ -115,14 +118,40 @@ def camera(video):
 ##
 
 def windowInit():
-    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
-    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
+    #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     
     background = cv2.imread('./img/background.png')
+    
+    stop_sign = cv2.imread('./img/ko/stop.png')
+    stop_sign = cv2.resize(stop_sign, (SIGN_WIDTH, SIGN_HEIGHT))
+    slow_sign = cv2.imread('./img/ko/slow.png')
+    slow_sign = cv2.resize(slow_sign, (SIGN_WIDTH, SIGN_HEIGHT))
+    over_sign = cv2.imread('./img/ko/overtaking.png')
+    over_sign = cv2.resize(over_sign, (SIGN_WIDTH, SIGN_HEIGHT))
+    
+    pastePicture(background, stop_sign, 0, 0)
+    pastePicture(background, slow_sign, 0, SIGN_HEIGHT)
+    pastePicture(background, over_sign, 0, SIGN_HEIGHT * 2)
     cv2.imshow('drive', background)
 
+def pastePicture(background, src, x, y):
+    
+    row, col, channel = src.shape
+    
+    graySrc = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+    ret, mask = cv2.threshold(graySrc, 10, 255, cv2.THRESH_BINARY)
+    mask_inv = cv2.bitwise_not(mask)
+    
+    roi = background[0 + y : row + y, 0 + x : col + x]
+    
+    bg = cv2.bitwise_and(roi, roi, mask = mask_inv)
+    srcFg = cv2.bitwise_and(src, src, mask = mask)
+    dst = cv2.add(bg, srcFg)
+    background[0 + y : row + y, 0 + x : col + x] = dst
+    
 def main():
     
     GPIO.setmode(GPIO.BCM)
