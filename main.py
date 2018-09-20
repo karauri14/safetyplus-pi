@@ -140,15 +140,18 @@ def windowInit(lang):
     images['SLOW'] = cv2.resize(images['SLOW'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
     images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
+    images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
+    images['ATTENTION'] = cv2.resize(images['ATTENTION'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     
-    return (images)
+    return images
 
 def makeImage(background, images, state_string):
     fuel, turn, stop, slow, over = state_string.split(',')
     
     if fuel == 'fuel':
         pastePicture(background, images['OIL'], SIGN_WIDTH, TEXT_HEIGHT)
-        
+    else :
+        pastePicture(background, images['ATTENTION'], SIGN_WIDTH, TEXT_HEIGHT)
     if turn == 'left':
         pastePicture(background, images['LEFT'], SIGN_WIDTH, TEXT_HEIGHT)
         
