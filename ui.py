@@ -11,11 +11,22 @@ TEXT_HEIGHT = 50
 GUIDE_WIDTH = 800 - SIGN_WIDTH
 GUIDE_HEIGHT = 480 - TEXT_HEIGHT
 
+#call when system wake up
+def logoDIsp():
+    cv2.namedWindow('logo', cv2.WINDOW_AUTOSIZE)
+    #cv2.namedWindow('logo', cv2.WINDOW_NORMAL)
+    #cv2.setWindowProperty('logo', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+    logo = cv2.imread('./img/logo.png')
+    cv2.imshow('logo', logo)
+    time.sleep(2)
+
 def soundPlay():
     pygame.mixer.music.play()
 
 def windowInit(lang):
     cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
+    #cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
     #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
