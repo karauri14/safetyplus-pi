@@ -20,17 +20,19 @@ def main():
     
     prev_string = ""
     
+    lang = 'ko'
+    ui.logoDisp()
+
     turnListener.init()
     
     video = cv2.VideoCapture(0)
     
-    lang = 'ko'
     
     bg_origin = cv2.imread('./img/background.png')
     background = bg_origin.copy()
     
     images = ui.windowInit(lang)
-    
+
     while True:
         state_string = ""
         state_string += fuelListener.listener()
@@ -39,7 +41,6 @@ def main():
         
         if prev_string != state_string:
             prev_string = state_string
-            print(state_string)
             background = bg_origin.copy()
             ui.makeWindow(background, images, state_string)
         

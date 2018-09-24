@@ -58,5 +58,4 @@ def listener(video):
     is_read, frame = video.read()
     
     if frame is not None:
-        cv2.imshow('video', frame)
         return (detect_contour(frame))
