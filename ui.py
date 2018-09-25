@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import pygame.mixer
+import time
 import threading
 
 SIGN_WIDTH = 160
@@ -21,19 +22,21 @@ def logoDisp():
 
     for i in range(0, 5):
         cv2.waitKey(10)
-    cv2.waitKey(5)
     cv2.destroyWindow('logo')
 
 def soundPlay():
-    pygame.mixer.music.init()
-    pygame.mixer.music.load(lang + '/voice/turn.mp3')
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(1)
+    time.sleep(10)
+    pygame.mixer.music.stop()
 
 def windowInit(lang):
     cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
     #cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
     #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-        
+    
+    pygame.init()
+    pygame.mixer.music.load(lang + '/voice/turn.mp3')
+
     images = {}
     images['OIL'] = cv2.imread('./img/oil/regular.png')
     images['OIL'] = cv2.resize(images['OIL'], (GUIDE_WIDTH, GUIDE_HEIGHT))
