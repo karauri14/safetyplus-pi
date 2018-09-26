@@ -6,8 +6,8 @@ import threading
 
 MAX_WIDTH = 800
 MAX_HEIGHT = 480
-SIGN_HEIGHT = MAX_HEIGHT / 3
-SIGN_WIDTH = SIGN_WIDTH
+SIGN_HEIGHT = (int)(MAX_HEIGHT / 3)
+SIGN_WIDTH = SIGN_HEIGHT
 TEXT_WIDTH = MAX_WIDTH - SIGN_WIDTH
 TEXT_HEIGHT = 50
 GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
@@ -58,7 +58,7 @@ def windowInit(lang):
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['ATTENTION'] = cv2.resize(images['ATTENTION'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     images['ACCIDENT'] = cv2.imread(lang + '/img/accident.png')
-    images['ACCIDENT'] = cv2.resize(images['ACCUDENT'], (TEXT_WIDTH, TEXT_HEIGHT))
+    images['ACCIDENT'] = cv2.resize(images['ACCIDENT'], (TEXT_WIDTH, TEXT_HEIGHT))
 
     return images
 
