@@ -4,12 +4,14 @@ import pygame.mixer
 import time
 import threading
 
-SIGN_WIDTH = 160
-SIGN_HEIGHT = 160
-TEXT_WIDTH = 800 - SIGN_WIDTH
+MAX_WIDTH = 800
+MAX_HEIGHT = 480
+SIGN_HEIGHT = MAX_HEIGHT / 3
+SIGN_WIDTH = SIGN_WIDTH
+TEXT_WIDTH = MAX_WIDTH - SIGN_WIDTH
 TEXT_HEIGHT = 50
-GUIDE_WIDTH = 800 - SIGN_WIDTH
-GUIDE_HEIGHT = 480 - TEXT_HEIGHT
+GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
+GUIDE_HEIGHT = MAX_HEIGHT - TEXT_HEIGHT
 
 #call when system wake up
 def logoDisp():
@@ -40,6 +42,7 @@ def windowInit(lang):
     images = {}
     images['OIL'] = cv2.imread('./img/oil/regular.png')
     images['OIL'] = cv2.resize(images['OIL'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.ping')
     images['LEFT'] = cv2.imread('./img/turn_left.png')
     images['LEFT'] = cv2.resize(images['LEFT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     images['RIGHT'] = cv2.imread('./img/turn_right.png')
@@ -50,9 +53,13 @@ def windowInit(lang):
     images['SLOW'] = cv2.resize(images['SLOW'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
     images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
+    images['OVERTEXT'] = cv2.imread(lang + '/img/over.png')
+    images['OVERTEXT'] = cv2.resize(images['OVERTEXT'], (TEXT_WIDTH, TEXT_HEIGHT))
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['ATTENTION'] = cv2.resize(images['ATTENTION'], (GUIDE_WIDTH, GUIDE_HEIGHT))
-    
+    images['ACCIDENT'] = cv2.imread(lang + '/img/accident.png')
+    images['ACCIDENT'] = cv2.resize(images['ACCUDENT'], (TEXT_WIDTH, TEXT_HEIGHT))
+
     return images
 
 def pastePicture(background, src, x, y):
