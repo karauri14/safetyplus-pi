@@ -36,7 +36,7 @@ def classification(ROI):
 
     predict_label = SIGN[int(label)]
     
-    print (predict_label)
+    #print (predict_label)
     return(predict_label)
 
 def find_contour_using_red_filter(src):
