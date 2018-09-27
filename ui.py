@@ -101,10 +101,10 @@ def makeWindow(base, images, state_string):
     if stop == 'stop':
         pastePicture(base, images['STOP'], 0, 0)
     
-    if slow == 'over':
+    if over == 'over':
         pastePicture(base, images['OVER'], 0, SIGN_HEIGHT)
     
-    if over == 'slow':
+    if slow == 'slow':
         pastePicture(base, images['SLOW'], 0, SIGN_HEIGHT * 2)
     
     cv2.imshow('drive', base)
