@@ -6,6 +6,7 @@ import numpy as np
 import signListener
 import turnListener
 import fuelListener
+import langSelector
 import ui
 
 KEY_ESC=27
@@ -17,6 +18,8 @@ def main():
     GPIO.setup(fuelListener.FUEL_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.L_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.R_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(langSelector.SET_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(langSelector.SELECT_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     
     prev_string = ""
     
@@ -34,11 +37,16 @@ def main():
     images = ui.windowInit(lang)
 
     while True:
+        
+        if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
+            lang = langSelector.langSelect(lang)
+            images = ui.windowInit(lang)
+            
         state_string = ""
         state_string += fuelListener.listener()
         state_string += turnListener.listener()
         state_string += signListener.listener(video)
-        
+            
         if prev_string != state_string:
             prev_string = state_string
             background = bg_origin.copy()
