@@ -27,17 +27,22 @@ prediction = graph.get_tensor_by_name('prediction:0')
 
 #sign listener
 def classification(ROI):
-
-    ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
-    ROI_arr = np.array(ROI_arr)
-
-    model_output, pred = sess.run([model, prediction], feed_dict={input_image:ROI_arr, keep_prob:1.0})
-    label = np.argmax(pred, 1)
-
-    predict_label = SIGN[int(label)]
     
-    #print (predict_label)
-    return(predict_label)
+    shape = ROI.shape
+    
+    if ((shape[0] >= 32) and (shape[1] >= 32)):
+        ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
+        ROI_arr = np.array(ROI_arr)
+        
+        ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
+        
+        pred = sess.run(prediction, feed_dict={input_image:ROI_arr, keep_prob:1.0})
+        label = np.argmax(pred, 1)
+
+        predict_label = SIGN[int(label)]
+        
+        #print (predict_label)
+        return(predict_label)
 
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
