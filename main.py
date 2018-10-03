@@ -24,7 +24,6 @@ def main():
     prev_string = ""
     
     lang = 'ko'
-    ui.logoDisp()
 
     turnListener.init()
     

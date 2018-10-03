@@ -13,19 +13,6 @@ TEXT_HEIGHT = 50
 GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
 GUIDE_HEIGHT = MAX_HEIGHT - TEXT_HEIGHT
 
-#call when system wake up
-def logoDisp():
-    cv2.namedWindow('logo', cv2.WINDOW_AUTOSIZE)
-    #cv2.namedWindow('logo', cv2.WINDOW_NORMAL)
-    #cv2.setWindowProperty('logo', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
-
-    logo = cv2.imread('./img/logo.png')
-    cv2.imshow('logo', logo)
-
-    for i in range(0, 5):
-        cv2.waitKey(10)
-    cv2.destroyWindow('logo')
-
 def soundPlay():
     pygame.mixer.music.play(1)
     time.sleep(10)
