@@ -15,6 +15,11 @@ MAX_RATIO = 1.0
 
 SIGN = np.array(["Takeover Sign", "Negative","Slow Sign", "Stop Sign"])
 
+#delay time (ms)
+OVER_TIME = 20
+STOP_TIME = 5
+SLOW_TIME = 30
+
 ops.reset_default_graph()
 sess = tf.Session()
 tf.saved_model.loader.load(sess, ["serve"], IMPORT_DIR)
@@ -24,6 +29,7 @@ output_label = graph.get_tensor_by_name('y_target:0')
 keep_prob = graph.get_tensor_by_name('keep_prob:0')
 model = graph.get_tensor_by_name('model_output:0')
 prediction = graph.get_tensor_by_name('prediction:0')
+
 
 #sign listener
 def classification(ROI):
@@ -66,11 +72,7 @@ def red_mask(src):
 
     return mask_not
 
-def detect_contour(src):
-    
-    is_over = False
-    is_stop = False
-    is_slow = False
+def detect_contour(src, sign_count):
     
     gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
@@ -102,38 +104,41 @@ def detect_contour(src):
             #"Takeover Sign", "Negative","Slow Sign", "Stop Sign"
             sign = classification(ROI)
             if sign == 'Takeover Sign':
-                is_over = True
+                sign_count['OVER'] = OVER_TIME
             elif sign == 'Slow Sign':
-                is_slow = True
+                sign_count['SLOW'] = SLOW_TIME
             elif sign == 'Stop Sign':
-                is_stop = True
+                sign_count['STOP'] = STOP_TIME
                   
     
-    return (make_state_string(is_stop, is_slow, is_over))
+    return (make_state_string(sign_count))
 
-def make_state_string(is_stop, is_slow, is_over):
+def make_state_string(sign_count):
     
     string = ""
     
-    if is_stop == True:
+    if sign_count['STOP'] != 0:
+        sign_count['STOP'] -= 1
         string += "stop,"
     else :
         string += ","
         
-    if is_slow == True:
+    if sign_count['SLOW'] != 0:
+        sign_count['SLOW'] -= 1
         string += "slow,"
     else :
         string += ","
         
-    if is_over == True:
+    if sign_count['OVER'] != 0:
+        sign_count['OVER'] -= 1
         string += "over"
     else :
         string += ""
     
     return (string)
 
-def listener(video):
+def listener(video, sign_count):
     is_read, frame = video.read()
     
     if frame is not None:
-        return (detect_contour(frame))
+        return (detect_contour(frame, sign_count))

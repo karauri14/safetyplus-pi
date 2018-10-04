@@ -29,7 +29,7 @@ def windowInit(lang):
 
     images = {}
     images['OIL'] = cv2.imread('./img/oil/regular.png')
-    images['OIL'] = cv2.resize(images['OIL'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['OIL'] = cv2.resize(images['OIL'], (MAX_WIDTH, MAX_HEIGHT))
     images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')
     images['OILTEXT'] = cv2.resize(images['OILTEXT'], (OIL_TEXT_WIDTH, OIL_TEXT_HEIGHT))
     images['LEFT'] = cv2.imread('./img/turn_left.png')
@@ -63,14 +63,10 @@ def pastePicture(background, src, x, y):
     background[0 + y : row + y, 0 + x : col + x] = dst
 
 def makeWindow(base, images, state_string):
-    fuel, turn, stop, slow, over = state_string.split(',')
+    turn, stop, slow, over = state_string.split(',')
     
-    #main area
-    if fuel == 'fuel':
-        pastePicture(base, images['OIL'], SIGN_WIDTH, 0)
-        pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
-        
-    elif turn == 'left':
+    #main area    
+    if turn == 'left':
         pastePicture(base, images['LEFT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         soundThread.start()
@@ -92,5 +88,11 @@ def makeWindow(base, images, state_string):
     
     if slow == 'slow':
         pastePicture(base, images['SLOW'], 0, SIGN_HEIGHT * 2)
+    
+    cv2.imshow('drive', base)
+
+def fuelWindow(base, images):
+    pastePicture(base, images['OIL'], 0, 0)
+    pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
     
     cv2.imshow('drive', base)

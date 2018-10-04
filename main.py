@@ -36,7 +36,9 @@ def main():
     background = bg_origin.copy()
     
     images = ui.windowInit(lang)
-
+    
+    sign_count = {'STOP':0, 'SLOW':0, 'OVER':0}
+    
     while True:
         
         if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
@@ -44,9 +46,8 @@ def main():
             images = ui.windowInit(lang)
             
         state_string = ""
-        state_string += fuelListener.listener()
         state_string += turnListener.listener()
-        state_string += signListener.listener(video)
+        state_string += signListener.listener(video, sign_count)
             
         if prev_string != state_string:
             prev_string = state_string
@@ -55,7 +56,16 @@ def main():
         
         is_parking = parkingListener.listener()
         if is_parking:
-            cv2.imshow('drive', bg_origin)
+            break
+        
+        cv2.waitKey(1)
+        
+        
+    cv2.imshow('drive', bg_origin)
+    
+    while True:
+        if fuelListener.listener():
+            ui.fuelWindow(bg_origin, images)
             cv2.waitKey(0)
             break
         
@@ -63,7 +73,7 @@ def main():
         if k == KEY_ESC:
             cv2.destroyAllWindows()
             break
-
+    
     video.release()        
     GPIO.cleanup()
     

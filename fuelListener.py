@@ -5,6 +5,6 @@ FUEL_PIN = 26
 #refuel listener
 def listener():
     if (GPIO.input(FUEL_PIN) == GPIO.LOW):
-        return ("fuel,")
-    else :
-        return (",")
+        return True
+    
+    return False
