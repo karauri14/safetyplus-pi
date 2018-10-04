@@ -8,10 +8,11 @@ MAX_WIDTH = 800
 MAX_HEIGHT = 480
 SIGN_HEIGHT = (int)(MAX_HEIGHT / 3)
 SIGN_WIDTH = SIGN_HEIGHT
-TEXT_WIDTH = MAX_WIDTH - SIGN_WIDTH
-TEXT_HEIGHT = 50
 GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
-GUIDE_HEIGHT = MAX_HEIGHT - TEXT_HEIGHT
+GUIDE_HEIGHT = MAX_HEIGHT
+OIL_TEXT_WIDTH = 200
+OIL_TEXT_HEIGHT = (int)(OIL_TEXT_WIDTH / 2)
+OIL_TEXT_MARGIN = 100
 
 def soundPlay():
     pygame.mixer.music.play(1)
@@ -29,7 +30,8 @@ def windowInit(lang):
     images = {}
     images['OIL'] = cv2.imread('./img/oil/regular.png')
     images['OIL'] = cv2.resize(images['OIL'], (GUIDE_WIDTH, GUIDE_HEIGHT))
-    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.ping')
+    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')
+    images['OILTEXT'] = cv2.resize(images['OILTEXT'], (OIL_TEXT_WIDTH, OIL_TEXT_HEIGHT))
     images['LEFT'] = cv2.imread('./img/turn_left.png')
     images['LEFT'] = cv2.resize(images['LEFT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     images['RIGHT'] = cv2.imread('./img/turn_right.png')
@@ -40,12 +42,8 @@ def windowInit(lang):
     images['SLOW'] = cv2.resize(images['SLOW'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
     images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
-    images['OVERTEXT'] = cv2.imread(lang + '/img/over.png')
-    images['OVERTEXT'] = cv2.resize(images['OVERTEXT'], (TEXT_WIDTH, TEXT_HEIGHT))
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['ATTENTION'] = cv2.resize(images['ATTENTION'], (GUIDE_WIDTH, GUIDE_HEIGHT))
-    images['ACCIDENT'] = cv2.imread(lang + '/img/accident.png')
-    images['ACCIDENT'] = cv2.resize(images['ACCIDENT'], (TEXT_WIDTH, TEXT_HEIGHT))
 
     return images
 
@@ -69,20 +67,21 @@ def makeWindow(base, images, state_string):
     
     #main area
     if fuel == 'fuel':
-        pastePicture(base, images['OIL'], SIGN_WIDTH, TEXT_HEIGHT)
+        pastePicture(base, images['OIL'], SIGN_WIDTH, 0)
+        pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
         
     elif turn == 'left':
-        pastePicture(base, images['LEFT'], SIGN_WIDTH, TEXT_HEIGHT)
+        pastePicture(base, images['LEFT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         soundThread.start()
         
     elif turn == 'right':
-        pastePicture(base, images['RIGHT'], SIGN_WIDTH, TEXT_HEIGHT)
+        pastePicture(base, images['RIGHT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         soundThread.start()
     
     else :
-        pastePicture(base, images['ATTENTION'], SIGN_WIDTH, TEXT_HEIGHT)
+        pastePicture(base, images['ATTENTION'], SIGN_WIDTH, 0)
     
     #sign area
     if stop == 'stop':

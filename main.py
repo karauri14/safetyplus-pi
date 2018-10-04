@@ -6,6 +6,7 @@ import numpy as np
 import signListener
 import turnListener
 import fuelListener
+import parkingListener
 import langSelector
 import ui
 
@@ -20,6 +21,7 @@ def main():
     GPIO.setup(turnListener.R_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(langSelector.SET_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(langSelector.SELECT_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(parkingListener.PARK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     
     prev_string = ""
     
@@ -50,6 +52,12 @@ def main():
             prev_string = state_string
             background = bg_origin.copy()
             ui.makeWindow(background, images, state_string)
+        
+        is_parking = parkingListener.listener()
+        if is_parking:
+            cv2.imshow('drive', bg_origin)
+            cv2.waitKey(0)
+            break
         
         k = cv2.waitKey(1)
         if k == KEY_ESC:
