@@ -15,7 +15,7 @@ KEY_ESC=27
 def main():
     
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(turnListener.SWITCH_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(turnListener.SLOW_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(fuelListener.FUEL_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.L_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.R_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
@@ -26,11 +26,8 @@ def main():
     prev_string = ""
     
     lang = 'ko'
-
-    turnListener.init()
     
     video = cv2.VideoCapture(0)
-    
     
     bg_origin = cv2.imread('./img/background.png')
     background = bg_origin.copy()
@@ -39,6 +36,7 @@ def main():
     
     sign_count = {'STOP':0, 'SLOW':0, 'OVER':0}
     
+    #main loop
     while True:
         
         if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
@@ -72,7 +70,7 @@ def main():
         k = cv2.waitKey(1)
         if k == KEY_ESC:
             cv2.destroyAllWindows()
-            break
+            exit()
     
     video.release()        
     GPIO.cleanup()

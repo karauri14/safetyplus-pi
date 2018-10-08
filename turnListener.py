@@ -1,49 +1,69 @@
 import obd
 import RPi.GPIO as GPIO
+import time
+import threading
 
-#speed length
-MAX_LENGTH = 10
+#speed log
+MAX_LENGTH = 100
+MARGIN = 5
 
 #use GPIO pin
 L_PIN = 20
 R_PIN = 21
 
 #demo only
-SWITCH_PIN = 16
-
-speed = {}
+SLOW_PIN = 16
+SPEED = 60
 
 #turn listener
-def init():
-    for i in range(0, MAX_LENGTH):
-        speed[i] = 1000
-    speed[MAX_LENGTH] = 0
+'''
+con = obd.OBD()
+'''
+speedThread = threading.Thread(target = speedLog)
+firstSpeed = 0
+speed = []
     
 def speedLog():
     
-    #con = obd.OBD()
-    for i in range(0, MAX_LENGTH - 1):
-        speed[i] = speed[i + 1]
-
-    speed[MAX_LENGTH - 1] = 60
-    #speed[MAX_LENGTH - 1] = con.query(obd.commands.SPEED)
-
-def speed_check():
+    speed[:] = []
+    #demo only
     for i in range(0, MAX_LENGTH):
-        if (speed[i] < speed[i + 1]):
-            return False
+        if (GPIO.input(SLOW_PIN) == GPIO.LOW):
+            speed.append = firstSpeed - MARGIN
+        
+        else :
+            speed.append = SPEED
+        
+        time.sleep(0.01)
+    
+    '''
+    for i in range(0, MAX_LENGTH):
+        speed[i] = con.query(obd.commands.SPEED)
+        time.sleep(0.01)
+    '''
 
-    return True
-    
+def isSlow():
+    if speedThread.is_alive() == False:
+        firstSpeed = SPEED
+        '''
+        firstSpeed = con.query(obd.commands.SPEED)
+        '''
+        speedThread.start()
+
+    for i in speed:
+        if (i <= firstSpeed - 5):
+            return True
+            
+    return False
+
 def listener():
-    
-    speedLog()
-    if (GPIO.input(L_PIN) == GPIO.LOW or GPIO.input(R_PIN) == GPIO.LOW):
-        flag = speed_check()
-        if (GPIO.input(SWITCH_PIN) == GPIO.LOW and flag == True):
-            if (GPIO.input(L_PIN) == GPIO.LOW):
-                return ("left,")
-            elif (GPIO.input(R_PIN) == GPIO.LOW):
-                return ("right,")
+
+    if (GPIO.input(L_PIN) == GPIO.LOW):
+        if isSlow():
+            return ("left,")
+        
+    if (GPIO.input(R_PIN) == GPIO.LOW):
+        if isSlow():
+            return ("right,")
     
     return (",")
