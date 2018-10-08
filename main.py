@@ -70,7 +70,7 @@ def main():
         k = cv2.waitKey(1)
         if k == KEY_ESC:
             cv2.destroyAllWindows()
-            exit()
+            break
     
     video.release()        
     GPIO.cleanup()

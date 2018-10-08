@@ -44,14 +44,17 @@ def speedLog():
 
 def isSlow():
     if speedThread.is_alive() == False:
+
+        #demo only
         firstSpeed = SPEED
+
         '''
         firstSpeed = con.query(obd.commands.SPEED)
         '''
         speedThread.start()
 
     for i in speed:
-        if (i <= firstSpeed - 5):
+        if (i <= firstSpeed - MARGIN):
             return True
             
     return False
