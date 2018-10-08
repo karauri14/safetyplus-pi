@@ -21,6 +21,6 @@ obd
 
 # supported language  
 English(en)  
-Korean(ko)  
-Chinese(zh)  
+한국(ko)  
+繁體中文(zh-TW)  
 

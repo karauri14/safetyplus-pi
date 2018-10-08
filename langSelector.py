@@ -17,8 +17,8 @@ def langSelect(lang):
             break
         if (GPIO.input(SELECT_PIN) == GPIO.LOW):
             if changed_lang == 'ko':
-                changed_lang = 'zh'
-            elif changed_lang == 'zh':
+                changed_lang = 'tw'
+            elif changed_lang == 'tw':
                 changed_lang = 'en'
             elif changed_lang == 'en':
                 changed_lang = 'ko'
