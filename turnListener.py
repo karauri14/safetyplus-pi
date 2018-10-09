@@ -19,7 +19,6 @@ SPEED = 60
 '''
 con = obd.OBD()
 '''
-speedThread = threading.Thread(target = speedLog)
 firstSpeed = 0
 speed = []
     
@@ -42,6 +41,7 @@ def speedLog():
         time.sleep(0.01)
     '''
 
+speedThread = threading.Thread(target = speedLog)
 def isSlow():
     if speedThread.is_alive() == False:
 
