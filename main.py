@@ -35,6 +35,7 @@ def main():
     images = ui.windowInit(lang)
     
     sign_count = {'STOP':0, 'SLOW':0, 'OVER':0}
+    turn_state = (",")
     
     #main loop
     while True:
@@ -44,7 +45,8 @@ def main():
             images = ui.windowInit(lang)
             
         state_string = ""
-        state_string += turnListener.listener()
+        turn_state = turnListener.listener(turn_state)
+        state_string += turn_state
         state_string += signListener.listener(video, sign_count)
             
         if prev_string != state_string:

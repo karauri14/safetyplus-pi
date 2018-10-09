@@ -69,12 +69,14 @@ def makeWindow(base, images, state_string):
     if turn == 'left':
         pastePicture(base, images['LEFT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
-        soundThread.start()
+        if soundThread.is_alive == False:
+            soundThread.start()
         
     elif turn == 'right':
         pastePicture(base, images['RIGHT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
-        soundThread.start()
+        if soundThread.is_alive == False:
+            soundThread.start()
     
     else :
         pastePicture(base, images['ATTENTION'], SIGN_WIDTH, 0)

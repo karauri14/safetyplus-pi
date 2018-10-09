@@ -6,6 +6,7 @@ import threading
 #speed log
 MAX_LENGTH = 100
 MARGIN = 5
+INF = 1000
 
 #use GPIO pin
 L_PIN = 20
@@ -19,19 +20,18 @@ SPEED = 60
 '''
 con = obd.OBD()
 '''
-firstSpeed = 0
-speed = []
-    
+speedRecode = [INF] * MAX_LENGTH
+
 def speedLog():
     
-    speed[:] = []
     #demo only
     for i in range(0, MAX_LENGTH):
+        print(i)
         if (GPIO.input(SLOW_PIN) == GPIO.LOW):
-            speed.append = firstSpeed - MARGIN
+            speedRecode[i] = SPEED - MARGIN
         
         else :
-            speed.append = SPEED
+            speedRecode[i] = SPEED
         
         time.sleep(0.01)
     
@@ -41,32 +41,33 @@ def speedLog():
         time.sleep(0.01)
     '''
 
-speedThread = threading.Thread(target = speedLog)
 def isSlow():
+    
+    speedThread = threading.Thread(target = speedLog)
     if speedThread.is_alive() == False:
-
         #demo only
         firstSpeed = SPEED
-
         '''
         firstSpeed = con.query(obd.commands.SPEED)
         '''
         speedThread.start()
-
-    for i in speed:
-        if (i <= firstSpeed - MARGIN):
+    for i in speedRecode:
+        if (i <= (firstSpeed - MARGIN)):
             return True
             
     return False
 
-def listener():
-
-    if (GPIO.input(L_PIN) == GPIO.LOW):
-        if isSlow():
-            return ("left,")
-        
-    if (GPIO.input(R_PIN) == GPIO.LOW):
-        if isSlow():
-            return ("right,")
+def listener(state):
     
-    return (",")
+    if (GPIO.input(L_PIN) == GPIO.LOW):
+        if state == 'left,':
+            return ('left,')
+        
+        if isSlow():
+            return ('left,')
+        
+    if (GPIO.input(R_PIN) == GPIO.LOW and state != 'right,'):
+        if isSlow():
+            return ('right,')
+    
+    return (',')
