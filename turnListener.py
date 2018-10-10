@@ -26,7 +26,6 @@ def speedLog():
     
     #demo only
     for i in range(0, MAX_LENGTH):
-        print(i)
         if (GPIO.input(SLOW_PIN) == GPIO.LOW):
             speedRecode[i] = SPEED - MARGIN
         
