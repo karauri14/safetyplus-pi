@@ -11,7 +11,6 @@ SIGN_WIDTH = SIGN_HEIGHT
 GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
 GUIDE_HEIGHT = MAX_HEIGHT
 OIL_TEXT_WIDTH = 200
-OIL_TEXT_HEIGHT = (int)(OIL_TEXT_WIDTH / 2)
 OIL_TEXT_MARGIN = 100
 
 def soundPlay():
@@ -31,11 +30,8 @@ def windowInit(lang):
     images['OIL'] = cv2.imread('./img/oil/regular.png')
     images['OIL'] = cv2.resize(images['OIL'], (MAX_WIDTH, MAX_HEIGHT))
     images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')
-    images['OILTEXT'] = cv2.resize(images['OILTEXT'], (OIL_TEXT_WIDTH, OIL_TEXT_HEIGHT))
     images['LEFT'] = cv2.imread('./img/turn_left.png')
-    images['LEFT'] = cv2.resize(images['LEFT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     images['RIGHT'] = cv2.imread('./img/turn_right.png')
-    images['RIGHT'] = cv2.resize(images['RIGHT'], (GUIDE_WIDTH, GUIDE_HEIGHT))
     images['STOP'] = cv2.imread(lang + '/img/stop.png')
     images['STOP'] = cv2.resize(images['STOP'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['SLOW'] = cv2.imread(lang + '/img/slow.png')
@@ -43,7 +39,7 @@ def windowInit(lang):
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
     images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
-    images['ATTENTION'] = cv2.resize(images['ATTENTION'], (GUIDE_WIDTH, GUIDE_HEIGHT))
+    images['DOOR'] = cv2.imread(lang + '/img/door.png')
 
     return images
 
@@ -98,3 +94,4 @@ def fuelWindow(base, images):
     pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
     
     cv2.imshow('drive', base)
+    

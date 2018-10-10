@@ -60,8 +60,7 @@ def main():
         
         cv2.waitKey(1)
         
-        
-    cv2.imshow('drive', bg_origin)
+    cv2.imshow('drive', images['DOOR'])
     
     while True:
         if fuelListener.listener():
