@@ -1,5 +1,9 @@
 import RPi.GPIO as GPIO
 import time
+import cv2
+
+#my module
+import ui
 
 SET_PIN = 19
 SELECT_PIN = 13
@@ -8,6 +12,10 @@ SELECT_PIN = 13
 CANCEL_TIME = 10 * 100
 
 def langSelect(lang):
+    
+    bg_origin = cv2.imread('./img/lang.png')
+    frame = cv2.imread('./img/frame.png')
+    
     changed_lang = lang
     count = 0
     
@@ -16,12 +24,16 @@ def langSelect(lang):
         if (count > CANCEL_TIME):
             break
         if (GPIO.input(SELECT_PIN) == GPIO.LOW):
-            if changed_lang == 'ko':
-                changed_lang = 'tw'
-            elif changed_lang == 'tw':
-                changed_lang = 'en'
-            elif changed_lang == 'en':
+            if changed_lang == 'en':
+                changed_lang = 'zh-tw'
+            elif changed_lang == 'zh-tw':
+                changed_lang = 'zh-cn'
+            elif changed_lang == 'zh-cn':
                 changed_lang = 'ko'
+            elif changed_lang == 'ko':
+                changed_lang = 'en'
+        
+        ui.langSelectWindow(bg_origin, frame, changed_lang)
         
         if (GPIO.input(SET_PIN) == GPIO.LOW):
             return changed_lang

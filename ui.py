@@ -12,6 +12,9 @@ GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
 GUIDE_HEIGHT = MAX_HEIGHT
 OIL_TEXT_WIDTH = 200
 OIL_TEXT_MARGIN = 100
+LIST_MARGIN = 60
+LIST_HEIGHT = 93
+LIST_WIDTH = 217
 
 def soundPlay():
     pygame.mixer.music.play(1)
@@ -94,4 +97,18 @@ def fuelWindow(base, images):
     pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
     
     cv2.imshow('drive', base)
+    
+def langSelectWindow(bg_origin, frame, lang):
+    bg = bg_origin.copy()
+    if lang == 'en':
+        pastePicture(bg, frame, LIST_WIDTH, LIST_MARGIN + LIST_HEIGHT * 0)
+    elif lang == 'zh-tw':
+        pastePicture(bg, frame, LIST_WIDTH, LIST_MARGIN + LIST_HEIGHT * 1)
+    elif lang == 'zh-cn':
+        pastePicture(bg, frame, LIST_WIDTH, LIST_MARGIN + LIST_HEIGHT * 2)
+    elif lang == 'ko':
+        pastePicture(bg, frame, LIST_WIDTH, LIST_MARGIN + LIST_HEIGHT * 3)
+        
+    cv2.imshow('drive', bg)
+    cv2.waitKey(1)
     

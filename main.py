@@ -39,15 +39,17 @@ def main():
     
     #main loop
     while True:
-        
-        if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
-            lang = langSelector.langSelect(lang)
-            images = ui.windowInit(lang)
             
         state_string = ""
         turn_state = turnListener.listener(turn_state)
         state_string += turn_state
         state_string += signListener.listener(video, sign_count)
+        
+        if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
+            lang = langSelector.langSelect(lang)
+            images = ui.windowInit(lang)
+            background = bg_origin.copy()
+            ui.makeWindow(background, images, state_string)
             
         if prev_string != state_string:
             prev_string = state_string
