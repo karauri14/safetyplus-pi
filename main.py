@@ -9,6 +9,7 @@ import fuelListener
 import parkingListener
 import langSelector
 import ui
+import laneOver
 
 KEY_ESC=27
     
@@ -37,6 +38,8 @@ def main():
     sign_count = {'STOP':0, 'SLOW':0, 'OVER':0}
     turn_state = (",")
     
+    pen = np.ones((7,7),np.uint8)
+    
     #main loop
     while True:
             
@@ -44,6 +47,7 @@ def main():
         turn_state = turnListener.listener(turn_state)
         state_string += turn_state
         state_string += signListener.listener(video, sign_count)
+        state_string += laneOver.laneover(video, pen)
         
         if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
             lang = langSelector.langSelect(lang)
