@@ -1,4 +1,5 @@
-# python version  
+﻿# version  
+Raspbian GNU/Linux 9.4    
 python3.5.3  
 
 # main script(parallel run)  
@@ -22,5 +23,6 @@ obd
 # supported language  
 English(en)  
 한국(ko)  
+简体中文(zh-CN)  
 繁體中文(zh-TW)  
 
