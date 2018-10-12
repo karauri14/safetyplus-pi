@@ -9,7 +9,7 @@ SET_PIN = 19
 SELECT_PIN = 13
 
 #wait 10s
-CANCEL_TIME = 10 * 100
+CANCEL_TIME = 1000
 
 def langSelect(lang):
     

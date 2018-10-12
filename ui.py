@@ -22,25 +22,21 @@ def soundPlay():
     pygame.mixer.music.stop()
 
 def windowInit(lang):
-    cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
-    #cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
-    #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    #cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     pygame.init()
     pygame.mixer.music.load(lang + '/voice/turn.mp3')
 
     images = {}
     images['OIL'] = cv2.imread('./img/oil/regular.png')
-    images['OIL'] = cv2.resize(images['OIL'], (MAX_WIDTH, MAX_HEIGHT))
     images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')
     images['LEFT'] = cv2.imread('./img/turn_left.png')
     images['RIGHT'] = cv2.imread('./img/turn_right.png')
     images['STOP'] = cv2.imread(lang + '/img/stop.png')
-    images['STOP'] = cv2.resize(images['STOP'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['SLOW'] = cv2.imread(lang + '/img/slow.png')
-    images['SLOW'] = cv2.resize(images['SLOW'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
-    images['OVER'] = cv2.resize(images['OVER'], (SIGN_WIDTH, SIGN_HEIGHT))
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['DOOR'] = cv2.imread(lang + '/img/door.png')
 
