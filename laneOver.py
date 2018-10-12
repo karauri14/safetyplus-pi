@@ -1,17 +1,19 @@
 import cv2
 import numpy as np
 
-def isOver(frame, pen):
+# Define range of color in HSV yellow
+lower_color = np.array([15, 40, 150]) 
+upper_color = np.array([25, 255, 255])
+
+pen = np.ones((7,7),np.uint8)
+
+def isNotOver(frame):
     
-    opening = cv2.morphologyEx(frame, cv2.MORPH_OPEN, pen)
-    closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, pen)
+    #opening = cv2.morphologyEx(frame, cv2.MORPH_OPEN, pen)
+    #closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, pen)
 
     # Convert BGR to HSV
-    hsv = cv2.cvtColor(closing, cv2.COLOR_BGR2HSV)
-
-    # Define range of color in HSV
-    lower_color = np.array([15, 40, 150]) 
-    upper_color = np.array([25, 255, 255])
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)    
     
     # Threshold the HSV image to get only yellow colors
     img_mask = cv2.inRange(hsv, lower_color, upper_color)

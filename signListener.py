@@ -8,8 +8,6 @@ import laneOver
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
-ESC_KEY = 27
-
 MIN_AREA = 500
 MAX_AREA = 5000
 MIN_RATIO = 0.8
@@ -22,16 +20,17 @@ OVER_TIME = 5
 STOP_TIME = 5
 SLOW_TIME = 30
 
+
 ops.reset_default_graph()
 sess = tf.Session()
-tf.saved_model.loader.load(sess, ["serve"], IMPORT_DIR)
-graph = tf.get_default_graph()
-input_image = graph.get_tensor_by_name('x_input:0')
-output_label = graph.get_tensor_by_name('y_target:0')
-keep_prob = graph.get_tensor_by_name('keep_prob:0')
-model = graph.get_tensor_by_name('model_output:0')
-prediction = graph.get_tensor_by_name('prediction:0')
+GRAPH_NAME = {'input_image':'','keep_prob':'','prediction':''}
 
+def init():
+    tf.saved_model.loader.load(sess, ["serve"], IMPORT_DIR)
+    graph = tf.get_default_graph()
+    GRAPH_NAME['input_image'] = graph.get_tensor_by_name('x_input:0')
+    GRAPH_NAME['keep_prob'] = graph.get_tensor_by_name('keep_prob:0')
+    GRAPH_NAME['prediction'] = graph.get_tensor_by_name('prediction:0')
 
 #sign listener
 def classification(ROI):
@@ -44,7 +43,7 @@ def classification(ROI):
         
         ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
         
-        pred = sess.run(prediction, feed_dict={input_image:ROI_arr, keep_prob:1.0})
+        pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
         label = np.argmax(pred, 1)
 
         predict_label = SIGN[int(label)]
@@ -77,7 +76,6 @@ def red_mask(src):
 def detect_contour(src, sign_count):
     
     gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-    pen = np.ones((7,7),np.uint8)
 
     ##method: using only red filter
     contours = find_contour_using_red_filter(src)
@@ -95,8 +93,7 @@ def detect_contour(src, sign_count):
         if len(contours[i]) > 0:
           rect = contours[i]
           x, y, w, h = cv2.boundingRect(rect)
-
-          #2nd condition
+          
         if (float(h) / float(w)) < MAX_RATIO and (float(h) / float(w)) > MIN_RATIO:
             rectangle = cv2.minAreaRect(rect)
             box = cv2.boxPoints(rectangle)
@@ -114,8 +111,8 @@ def detect_contour(src, sign_count):
                 sign_count['STOP'] = STOP_TIME
     
     #kishimon
-    #if laneOver.isOver(src, pen) == True:
-    #    sign_count['OVER'] = OVER_TIME
+    if laneOver.isNotOver(src) == True:
+        sign_count['OVER'] = OVER_TIME
     
     return (make_state_string(sign_count))
 
@@ -146,6 +143,6 @@ def make_state_string(sign_count):
 def listener(video, sign_count):
     is_read, frame = video.read()
     
-    cv2.imshow('camera', frame)
+    #cv2.imshow('camera', frame)
     if frame is not None:
         return (detect_contour(frame, sign_count))

@@ -65,7 +65,10 @@ def listener(state):
         if isSlow():
             return ('left,')
         
-    if (GPIO.input(R_PIN) == GPIO.LOW and state != 'right,'):
+    if (GPIO.input(R_PIN) == GPIO.LOW):
+        if state == 'right,':
+            return ('right,')
+        
         if isSlow():
             return ('right,')
     

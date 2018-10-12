@@ -34,17 +34,13 @@ def main():
     
     images = ui.windowInit(lang)
     
+    signListener.init()
     sign_count = {'STOP':0, 'SLOW':0, 'OVER':0}
     turn_state = (",")
     
     
     #main loop
     while True:
-        
-        k = cv2.waitKey(1)
-        if k == KEY_ESC:
-            cv2.destroyAllWindows()
-            break
         
         state_string = ""
         turn_state = turnListener.listener(turn_state)
@@ -64,6 +60,11 @@ def main():
         
         is_parking = parkingListener.listener()
         if is_parking:
+            break
+        
+        k = cv2.waitKey(1)
+        if k == KEY_ESC:
+            cv2.destroyAllWindows()
             break
         
         cv2.waitKey(1)
