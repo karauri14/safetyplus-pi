@@ -3,6 +3,8 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.framework import ops
 
+import laneOver
+
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
@@ -16,7 +18,7 @@ MAX_RATIO = 1.0
 SIGN = np.array(["Takeover Sign", "Negative","Slow Sign", "Stop Sign"])
 
 #delay time (ms)
-OVER_TIME = 20
+OVER_TIME = 5
 STOP_TIME = 5
 SLOW_TIME = 30
 
@@ -75,6 +77,7 @@ def red_mask(src):
 def detect_contour(src, sign_count):
     
     gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
+    pen = np.ones((7,7),np.uint8)
 
     ##method: using only red filter
     contours = find_contour_using_red_filter(src)
@@ -109,7 +112,10 @@ def detect_contour(src, sign_count):
                 sign_count['SLOW'] = SLOW_TIME
             elif sign == 'Stop Sign':
                 sign_count['STOP'] = STOP_TIME
-                  
+    
+    #kishimon
+    #if laneOver.isOver(src, pen) == True:
+    #    sign_count['OVER'] = OVER_TIME
     
     return (make_state_string(sign_count))
 
@@ -140,5 +146,6 @@ def make_state_string(sign_count):
 def listener(video, sign_count):
     is_read, frame = video.read()
     
+    cv2.imshow('camera', frame)
     if frame is not None:
         return (detect_contour(frame, sign_count))
