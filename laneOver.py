@@ -5,15 +5,12 @@ import numpy as np
 lower_color = np.array([15, 40, 150]) 
 upper_color = np.array([25, 255, 255])
 
-pen = np.ones((7,7),np.uint8)
-
 def isNotOver(frame):
-    
-    #opening = cv2.morphologyEx(frame, cv2.MORPH_OPEN, pen)
-    #closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, pen)
+
+    resize_frame = cv2.resize(frame, (int(frame.shape[1]/4), int(frame.shape[0]/4)))
 
     # Convert BGR to HSV
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)    
+    hsv = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2HSV)    
     
     # Threshold the HSV image to get only yellow colors
     img_mask = cv2.inRange(hsv, lower_color, upper_color)
@@ -25,7 +22,7 @@ def isNotOver(frame):
         M = cv2.moments(cnt)
         area = cv2.contourArea(cnt)
 
-        if area < 2000 or 8000 < area:
+        if area < 1000 or 4000 < area:
             continue
         
         x,y,w,h = cv2.boundingRect(img_mask)
