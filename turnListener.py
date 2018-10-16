@@ -82,5 +82,5 @@ def listener(state):
             return ('right,')
     
     if (state == 'right,' or state == 'left,'):
-        speedRecode = [INF] * MAX_LEGTH
+        speedRecode = [INF] * MAX_LENGTH
     return (',')
