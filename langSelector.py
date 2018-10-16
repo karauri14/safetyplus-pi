@@ -9,7 +9,7 @@ SET_PIN = 19
 SELECT_PIN = 13
 
 #wait 10s
-CANCEL_TIME = 1000
+CANCEL_TIME = 80
 
 def langSelect(lang):
     
@@ -24,6 +24,7 @@ def langSelect(lang):
         if (count > CANCEL_TIME):
             break
         if (GPIO.input(SELECT_PIN) == GPIO.LOW):
+            count = 0
             if changed_lang == 'en':
                 changed_lang = 'zh-tw'
             elif changed_lang == 'zh-tw':
