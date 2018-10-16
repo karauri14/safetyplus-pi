@@ -40,16 +40,8 @@ def speedLog():
         time.sleep(0.01)
     '''
 
-def isSlow():
+def isSlow(firstSpeed):
     
-    speedThread = threading.Thread(target = speedLog)
-    if speedThread.is_alive() == False:
-        #demo only
-        firstSpeed = SPEED
-        '''
-        firstSpeed = con.query(obd.commands.SPEED)
-        '''
-        speedThread.start()
     for i in speedRecode:
         if (i <= (firstSpeed - MARGIN)):
             return True
@@ -57,19 +49,38 @@ def isSlow():
     return False
 
 def listener(state):
-    
+    speedThread = threading.Thread(target = speedLog)
+
     if (GPIO.input(L_PIN) == GPIO.LOW):
         if state == 'left,':
             return ('left,')
         
-        if isSlow():
+        if speedThread.is_alive() == False:
+            #demo only
+            firstSpeed = SPEED
+            '''
+            firstSpeed = con.query(obd.commands.SPEED)
+            '''
+            speedRecode = [INF] * MAX_LENGTH
+            speedThread.start()
+        if isSlow(firstSpeed):
             return ('left,')
         
     if (GPIO.input(R_PIN) == GPIO.LOW):
         if state == 'right,':
             return ('right,')
         
-        if isSlow():
+        if speedThread.is_alive() == False:
+            #demo only
+            firstSpeed = SPEED
+            '''
+            firstSpeed = con.query(obd.commands.SPEED)
+            '''
+            speedRecode = [INF] * MAX_LENGTH
+            speedThread.start()
+        if isSlow(firstSpeed):
             return ('right,')
     
+    if (state == 'right,' or state == 'left,'):
+        speedRecode = [INF] * MAX_LEGTH
     return (',')
