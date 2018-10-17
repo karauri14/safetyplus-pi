@@ -19,6 +19,7 @@ Opencv3
 numpy  
 Tensorflow  
 obd   
+pygame  
 
 # supported language  
 English(en)  
