@@ -40,6 +40,7 @@ def windowInit(lang):
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['DOOR'] = cv2.imread(lang + '/img/door.png')
     images['BACK'] = cv2.imread(lang + '/img/back.png')
+    images['DANGER'] = cv2.imread(lang + '/img/danger.png')
 
     return images
 
@@ -76,6 +77,9 @@ def makeWindow(base, images, stateString):
     
     elif main == 'back':
         pastePicture(base, images['BACK'], SIGN_WIDTH, 0)
+    
+    elif main == 'danger':
+        pastePicture(base, images['DANGER'], SIGN_WIDTH, 0)
 
     else :
         pastePicture(base, images['ATTENTION'], SIGN_WIDTH, 0)

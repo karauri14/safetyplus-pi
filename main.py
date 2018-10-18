@@ -23,7 +23,8 @@ def main():
     GPIO.setup(langSelector.SELECT_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(parkingListener.PARK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(parkingListener.BACK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-    
+    GPIO.setup(parkingListener.DANGER_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+
     prevString = ""
     
     lang = 'ko'
@@ -47,6 +48,10 @@ def main():
             stateString = ""
             if parkingListener.isBack():
                 stateString += 'back,'
+            
+            elif parkingLister.isDanger():
+                stateString += 'danger'
+            
             else :
                 turnState = turnListener.listener(turnState)
                 stateString += turnState
