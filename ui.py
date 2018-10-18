@@ -39,6 +39,7 @@ def windowInit(lang):
     images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
     images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
     images['DOOR'] = cv2.imread(lang + '/img/door.png')
+    images['BACK'] = cv2.imread(lang + '/img/back.png')
 
     return images
 
@@ -57,22 +58,25 @@ def pastePicture(background, src, x, y):
     dst = cv2.add(bg, srcFg)
     background[0 + y : row + y, 0 + x : col + x] = dst
 
-def makeWindow(base, images, state_string):
-    turn, stop, slow, over = state_string.split(',')
+def makeWindow(base, images, stateString):
+    main, stop, slow, over = stateString.split(',')
     
     #main area    
-    if turn == 'left':
+    if main == 'left':
         pastePicture(base, images['LEFT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         if soundThread.is_alive == False:
             soundThread.start()
         
-    elif turn == 'right':
+    elif main == 'right':
         pastePicture(base, images['RIGHT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         if soundThread.is_alive == False:
             soundThread.start()
     
+    elif main == 'back':
+        pastePicture(base, images['BACK'], SIGN_WIDTH, 0)
+
     else :
         pastePicture(base, images['ATTENTION'], SIGN_WIDTH, 0)
     
@@ -94,8 +98,8 @@ def fuelWindow(base, images):
     
     cv2.imshow('drive', base)
     
-def langSelectWindow(bg_origin, frame, lang):
-    bg = bg_origin.copy()
+def langSelectWindow(bgOrigin, frame, lang):
+    bg = bgOrigin.copy()
     if lang == 'en':
         pastePicture(bg, frame, LIST_WIDTH, LIST_MARGIN + LIST_HEIGHT * 0)
     elif lang == 'zh-tw':
