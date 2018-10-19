@@ -44,19 +44,17 @@ def main():
     #main loop
     while True:
         
+        stateString = ""
         if parkingListener.isParking() != True:
-            stateString = ""
-            if parkingListener.isBack():
-                stateString += 'back,'
             
-            elif parkingLister.isDanger():
-                stateString += 'danger'
+            #main area
+            turnState = turnListener.listener(turnState)
+            stateString += turnState
             
-            else :
-                turnState = turnListener.listener(turnState)
-                stateString += turnState
+            #sign area
             stateString += signListener.listener(video, signCount)
             
+            #language select
             if (GPIO.input(langSelector.SELECT_PIN) == GPIO.LOW):
                 lang = langSelector.langSelect(lang)
                 images = ui.windowInit(lang)
@@ -68,10 +66,12 @@ def main():
                 background = bgOrigin.copy()
                 ui.makeWindow(background, images, stateString)
         
+        #parking
         else :
+            prevString = 'parking'
             cv2.imshow('drive', images['DOOR'])
             if fuelListener.isFuel():
-                ui.fuelWindow(bgOrigin, images)
+                ui.fuelWindow(background, images)
 
         k = cv2.waitKey(1)
         if k == KEY_ESC:
