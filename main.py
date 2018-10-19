@@ -23,8 +23,8 @@ def main():
     GPIO.setup(langSelector.SET_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(langSelector.SELECT_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(parkingListener.PARK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-    GPIO.setup(parkingListener.BACK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-    GPIO.setup(parkingListener.DANGER_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(textListener.BACK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(textListener.DANGER_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
     prevString = ""
     

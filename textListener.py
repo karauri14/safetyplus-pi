@@ -15,7 +15,7 @@ def isDanger():
 
     return (False)
 
-def listenr():	
+def listener():	
 	if isBack():
 		return ('back,')
 				
