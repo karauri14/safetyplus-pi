@@ -75,6 +75,7 @@ def main():
             prevString = 'parking'
             cv2.imshow('drive', images['DOOR'])
             if fuelListener.isFuel():
+                background = bgOrigin.copy()
                 ui.fuelWindow(background, images)
 
         k = cv2.waitKey(1)
