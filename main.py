@@ -6,6 +6,7 @@ import numpy as np
 import signListener
 import turnListener
 import fuelListener
+import textListener
 import parkingListener
 import langSelector
 import ui
@@ -50,6 +51,9 @@ def main():
             #main area
             turnState = turnListener.listener(turnState)
             stateString += turnState
+            
+            #text area
+            stateString += textListener.listener()
             
             #sign area
             stateString += signListener.listener(video, signCount)

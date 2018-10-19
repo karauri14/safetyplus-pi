@@ -10,6 +10,8 @@ SIGN_HEIGHT = (int)(MAX_HEIGHT / 3)
 SIGN_WIDTH = SIGN_HEIGHT
 GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
 GUIDE_HEIGHT = MAX_HEIGHT
+TEXT_WIDTH = GUIDE_WIDTH
+TEXT_HEIGHT = MAX_HEIGHT - 98
 OIL_TEXT_WIDTH = 615
 OIL_TEXT_MARGIN = 102
 LIST_MARGIN = 123
@@ -30,17 +32,17 @@ def windowInit(lang):
     pygame.mixer.music.load(lang + '/voice/turn.mp3')
 
     images = {}
-    images['OIL'] = cv2.imread('./img/oil/regular.png')
-    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')
-    images['LEFT'] = cv2.imread('./img/turn_left.png')
-    images['RIGHT'] = cv2.imread('./img/turn_right.png')
-    images['STOP'] = cv2.imread(lang + '/img/stop.png')
-    images['SLOW'] = cv2.imread(lang + '/img/slow.png')
-    images['OVER'] = cv2.imread(lang + '/img/overtaking.png')
-    images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')
-    images['DOOR'] = cv2.imread(lang + '/img/door.png')
-    images['BACK'] = cv2.imread(lang + '/img/back.png')
-    images['DANGER'] = cv2.imread(lang + '/img/danger.png')
+    images['OIL'] = cv2.imread('./img/oil/regular.png')				#full size
+    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')		#small size
+    images['LEFT'] = cv2.imread('./img/turn_left.png')				#main size
+    images['RIGHT'] = cv2.imread('./img/turn_right.png')			#main size
+    images['STOP'] = cv2.imread(lang + '/img/stop.png')				#sign size
+    images['SLOW'] = cv2.imread(lang + '/img/slow.png')				#sign size
+    images['OVER'] = cv2.imread(lang + '/img/overtaking.png')		#sign size
+    images['ATTENTION'] = cv2.imread(lang + '/img/attention.png')	#text size
+    images['DOOR'] = cv2.imread(lang + '/img/door.png')				#full size
+    images['BACK'] = cv2.imread(lang + '/img/back.png')				#full size
+    images['DANGER'] = cv2.imread(lang + '/img/danger.png')			#text size
 
     return images
 
@@ -60,29 +62,30 @@ def pastePicture(background, src, x, y):
     background[0 + y : row + y, 0 + x : col + x] = dst
 
 def makeWindow(base, images, stateString):
-    main, stop, slow, over = stateString.split(',')
+    turn, text, stop, slow, over = stateString.split(',')
     
     #main area    
-    if main == 'left':
+    if turn == 'left':
         pastePicture(base, images['LEFT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         if soundThread.is_alive == False:
             soundThread.start()
         
-    elif main == 'right':
+    elif turn == 'right':
         pastePicture(base, images['RIGHT'], SIGN_WIDTH, 0)
         soundThread = threading.Thread(target = soundPlay)
         if soundThread.is_alive == False:
             soundThread.start()
     
-    elif main == 'back':
-        pastePicture(base, images['BACK'], SIGN_WIDTH, 0)
+    #text area
+    if text == 'back':
+        pastePicture(base, images['BACK'], 0, 0)
     
-    elif main == 'danger':
-        pastePicture(base, images['DANGER'], SIGN_WIDTH, 0)
+    elif text == 'danger':
+        pastePicture(base, images['DANGER'], SIGN_WIDTH, TEXT_HEIGHT)
 
     else :
-        pastePicture(base, images['ATTENTION'], SIGN_WIDTH, 0)
+        pastePicture(base, images['ATTENTION'], SIGN_WIDTH, TEXT_HEIGHT)
     
     #sign area
     if stop == 'stop':

@@ -3,8 +3,6 @@ import RPi.GPIO as GPIO
 import time
 import threading
 
-import parkingListener
-
 #speed log
 MAX_LENGTH = 100
 MARGIN = 5
@@ -76,11 +74,5 @@ def listener(state):
     
     if (state == 'right,' or state == 'left,'):
         speedRecode[:] = []
-    
-    if parkingListener.isBack():
-        return ('back,')
-            
-    elif parkingListener.isDanger():
-        return ('danger,')
         
     return (',')
