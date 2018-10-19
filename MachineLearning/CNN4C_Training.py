@@ -74,16 +74,16 @@ image_width = train_images[0].shape[0]
 image_height = train_images[0].shape[1]
 target_size = max(train_labels) + 1
 num_channels = 3
-generations = 100
+generations = 50
 eval_every = 5
 conv1_features = 32
 conv2_features = 64
 max_pool_size = 2
-fully_connected_size1 = 120
-fully_connected_size2 = 60
+fully_connected_size1 = 400
+fully_connected_size2 = 100
 filter_size = 3
 conv_stride = 1
-dropout = 0.7
+dropout = 0.5
 
 keep_prob = tf.placeholder(tf.float32, (None), name='keep_prob')
 
@@ -119,12 +119,12 @@ def my_conv_net(input_data, keep_prob):
     conv1 = tf.nn.conv2d(input_data, conv1_weight, strides=[1, conv_stride, conv_stride, 1], padding='SAME')
     relu1 = tf.nn.relu(tf.nn.bias_add(conv1, conv1_bias))
     max_pool1 = tf.nn.max_pool(relu1, ksize=[1, max_pool_size, max_pool_size, 1], strides=[1, max_pool_size, max_pool_size, 1], padding='SAME')
-    max_pool1 = tf.nn.dropout(max_pool1, keep_prob)
+    #max_pool1 = tf.nn.dropout(max_pool1, keep_prob)
     # Second Conv-ReLU-MaxPool Layer
     conv2 = tf.nn.conv2d(max_pool1, conv2_weight, strides=[1, conv_stride, conv_stride, 1], padding='SAME')
     relu2 = tf.nn.relu(tf.nn.bias_add(conv2, conv2_bias))
     max_pool2 = tf.nn.max_pool(relu2, ksize=[1, max_pool_size, max_pool_size, 1], strides=[1, max_pool_size, max_pool_size, 1], padding='SAME')
-    max_pool2 = tf.nn.dropout(max_pool2, keep_prob)
+    #max_pool2 = tf.nn.dropout(max_pool2, keep_prob)
     # Transform Output into a 1xN layer for next fully connected layer
     #final_conv_shape = max_pool2.get_shape().as_list()
     #print(final_conv_shape)
