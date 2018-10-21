@@ -12,8 +12,6 @@ GUIDE_WIDTH = MAX_WIDTH - SIGN_WIDTH
 GUIDE_HEIGHT = MAX_HEIGHT
 TEXT_WIDTH = GUIDE_WIDTH
 TEXT_HEIGHT = MAX_HEIGHT - 98
-OIL_TEXT_WIDTH = 615
-OIL_TEXT_MARGIN = 102
 LIST_MARGIN = 123
 LIST_HEIGHT = 190
 LIST_WIDTH = 495
@@ -32,8 +30,7 @@ def windowInit(lang):
     pygame.mixer.music.load(lang + '/voice/turn.mp3')
 
     images = {}
-    images['OIL'] = cv2.imread('./img/oil/regular.png')				#full size
-    images['OILTEXT'] = cv2.imread(lang + '/img/refuel.png')		#small size
+    images['OIL'] = cv2.imread(lang + './img/refuel.png')			#full size
     images['LEFT'] = cv2.imread('./img/turn_left.png')				#main size
     images['RIGHT'] = cv2.imread('./img/turn_right.png')			#main size
     images['STOP'] = cv2.imread(lang + '/img/stop.png')				#sign size
@@ -99,7 +96,6 @@ def makeWindow(base, images, stateString):
 
 def fuelWindow(base, images):
     pastePicture(base, images['OIL'], 0, 0)
-    pastePicture(base, images['OILTEXT'], MAX_WIDTH - OIL_TEXT_WIDTH - OIL_TEXT_MARGIN, OIL_TEXT_MARGIN)
     
     cv2.imshow('drive', base)
     
