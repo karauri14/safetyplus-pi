@@ -30,7 +30,7 @@ def windowInit(lang):
     pygame.mixer.music.load(lang + '/voice/turn.mp3')
 
     images = {}
-    images['OIL'] = cv2.imread(lang + './img/refuel.png')			#full size
+    images['REFUEL'] = cv2.imread(lang + './img/refuel.png')			#full size
     images['LEFT'] = cv2.imread('./img/turn_left.png')				#main size
     images['RIGHT'] = cv2.imread('./img/turn_right.png')			#main size
     images['STOP'] = cv2.imread(lang + '/img/stop.png')				#sign size
@@ -91,11 +91,6 @@ def makeWindow(base, images, stateString):
     
     if slow == 'slow':
         pastePicture(base, images['SLOW'], 0, SIGN_HEIGHT * 2)
-    
-    cv2.imshow('drive', base)
-
-def fuelWindow(base, images):
-    pastePicture(base, images['OIL'], 0, 0)
     
     cv2.imshow('drive', base)
     
