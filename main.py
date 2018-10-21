@@ -75,7 +75,7 @@ def main():
             prevString = 'parking'
             cv2.imshow('drive', images['DOOR'])
             if fuelListener.isFuel():
-				cv2.imshow('drive', images['REFUEL']
+				cv2.imshow('drive', images['REFUEL'])
 
         k = cv2.waitKey(1)
         if k == KEY_ESC:
