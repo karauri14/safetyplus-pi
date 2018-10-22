@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 # Define range of color in HSV yellow
-lower_color = np.array([5, 58, 180])
-upper_color = np.array([15,  255, 255])
+lower_color = np.array([10, 30, 180])
+upper_color = np.array([20,  255, 255])
 
 def isNotOver(frame):
 
@@ -21,17 +21,18 @@ def isNotOver(frame):
     for i in range (0, len(contours)):
         #calc moment
         cnt = contours[i]
-        M = cv2.moments(cnt)
         area = cv2.contourArea(cnt)
 
-        if area < 2.5 or 10 < area:
+        if area < 2.5 or 30 < area:
             continue
 
-        x,y,w,h = cv2.boundingRect(img_mask)
-        aspect_ratio = float(h)/w
-
-        if 1 < aspect_ratio:
-            return True
+        if 2.5 < area and area < 30 :
+            lane_cnt = lane_cnt  + 1;
 
         else :
+            lane_cnt = 0;
             return False
+
+        if  lane_cnt == 10:
+            lane_cnt = 0;
+            return True
