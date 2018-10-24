@@ -20,7 +20,7 @@ OVER_TIME = 5
 STOP_TIME = 5
 SLOW_TIME = 30
 
-SHRINK = 0.36
+SHRINK = 0.2
 
 lower_red1 = np.array([0,10,20])
 upper_red1 = np.array([20,255,255])
