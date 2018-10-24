@@ -3,6 +3,9 @@ import cv2
 WAIT_TIME = 1 
 STEP = 0.2
 
+#Wait time (ms)
+FULLDISP_TIME = 3000
+
 def fadeIn(logo, bg):
     i = 0
     while i <= 1:
@@ -32,7 +35,7 @@ def main():
     fadeIn(logo, bg)
     
     cv2.imshow('logo', logo)
-    cv2.waitKey(5000)
+    cv2.waitKey(FULLDISP_TIME)
     
     fadeOut(logo, bg)
     

@@ -40,14 +40,12 @@ def main():
     signListener.init()
     signCount = {'STOP':0, 'SLOW':0, 'OVER':0}
     turnState = (",")
-    lane_cnt = 0
-
 
     #main loop
     while True:
 
-        stateString = ""
         if parkingListener.isParking() != True:
+            stateString = ""
 
             #main area
             turnState = turnListener.listener(turnState)
