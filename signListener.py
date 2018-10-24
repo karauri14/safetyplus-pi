@@ -85,11 +85,11 @@ def detect_contour(src, sign_count):
         #area(float) of each countour(list)
         area = cv2.contourArea(cnt)
 
-        #if the size of area less than 125 || more than 1250, just ignore
+        #if the size of area less than 500 || more than 3000, just ignore
         if area < MIN_AREA or MAX_AREA < area:
           continue
 
-        #if it is between 125 and 1250, create bounding box(x,y,w,h) around countours
+        #if it is between 500 and 3000, create bounding box(x,y,w,h) around countours
         if len(cnt) > 0:
           rect = cnt
           x, y, w, h = cv2.boundingRect(rect)
@@ -110,7 +110,6 @@ def detect_contour(src, sign_count):
     if laneOver.isNotOver(src) == True:
         sign_count['OVER'] = OVER_TIME
     
-    cv2.imshow("camera", src)
     return (make_state_string(sign_count))
 
 def make_state_string(sign_count):
