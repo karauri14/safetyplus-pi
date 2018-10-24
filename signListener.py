@@ -8,8 +8,8 @@ import laneOver
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
-MIN_AREA = 125
-MAX_AREA = 1250
+MIN_AREA = 500
+MAX_AREA = 3000
 MIN_RATIO = 0.8
 MAX_RATIO = 1.0
 
@@ -20,7 +20,7 @@ OVER_TIME = 5
 STOP_TIME = 5
 SLOW_TIME = 30
 
-SHRINK = 4
+SHRINK = 0.6
 
 lower_red1 = np.array([0,10,20])
 upper_red1 = np.array([20,255,255])
@@ -81,17 +81,17 @@ def detect_contour(src, sign_count):
     contours = find_contour_using_red_filter(src)
     
     #1st condition
-    for i in range(0, len(contours)):
+    for cnt in contours:
         #area(float) of each countour(list)
-        area = cv2.contourArea(contours[i])
+        area = cv2.contourArea(cnt)
 
         #if the size of area less than 125 || more than 1250, just ignore
         if area < MIN_AREA or MAX_AREA < area:
           continue
 
         #if it is between 125 and 1250, create bounding box(x,y,w,h) around countours
-        if len(contours[i]) > 0:
-          rect = contours[i]
+        if len(cnt) > 0:
+          rect = cnt
           x, y, w, h = cv2.boundingRect(rect)
           
         if (float(h) / float(w)) < MAX_RATIO and (float(h) / float(w)) > MIN_RATIO:
@@ -137,7 +137,7 @@ def make_state_string(sign_count):
 
 def listener(video, sign_count):
     is_read, frame = video.read()
-    frame = cv2.resize(frame,(int(frame.shape[1] / SHRINK), int(frame.shape[0] / SHRINK)))
+    frame = cv2.resize(frame, None, fx = SHRINK, fy = SHRINK, interpolation = cv2.INTER_LINEAR)
     
     #cv2.imshow('camera', frame)
     if frame is not None:
