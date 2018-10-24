@@ -26,14 +26,13 @@ def isNotOver(frame):
     img_mask = cv2.inRange(hsv, lower_color, upper_color)
 
     image, contours, hierarchy = cv2.findContours(img_mask.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    for i in range (0, len(contours)):
-        cnt = contours[i]
+    for cnt in contours:
         area = cv2.contourArea(cnt)
 
         if area < MIN_AREA or MAX_AREA < area:
             continue
 
-        count['LANE']  += 1
+        count['LANE'] += 1
 
         if  count['LANE'] >= MAX_COUNT:
             count['LANE'] = 0
