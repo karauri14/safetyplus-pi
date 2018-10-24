@@ -20,7 +20,7 @@ OVER_TIME = 5
 STOP_TIME = 5
 SLOW_TIME = 30
 
-SHRINK = 0.6
+SHRINK = 0.36
 
 lower_red1 = np.array([0,10,20])
 upper_red1 = np.array([20,255,255])
@@ -43,18 +43,18 @@ def classification(ROI):
     
     shape = ROI.shape
     
-    #if ((shape[0] >= 8) and (shape[1] >= 8)):
-    ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
-    ROI_arr = np.array(ROI_arr)
+    if ((shape[0] >= DATASET_IMAGE_SIZE) and (shape[1] >= DATASET_IMAGE_SIZE)):
+        ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
+        ROI_arr = np.array(ROI_arr)
+        
+        ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
+        
+        pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
+        label = np.argmax(pred, 1)
+        predict_label = SIGN[int(label)]
     
-    ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
-    
-    pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
-    label = np.argmax(pred, 1)
-    predict_label = SIGN[int(label)]
-    
-    #print (predict_label)
-    return(predict_label)
+        #print (predict_label)
+        return(predict_label)
 
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
@@ -96,6 +96,7 @@ def detect_contour(src, sign_count):
           
         if (float(h) / float(w)) < MAX_RATIO and (float(h) / float(w)) > MIN_RATIO:
             ROI = src[y:y + h, x:x + w]
+            
             #"Takeover Sign", "Negative","Slow Sign", "Stop Sign"
             sign = classification(ROI)
             if sign == 'Takeover Sign':
@@ -109,6 +110,7 @@ def detect_contour(src, sign_count):
     if laneOver.isNotOver(src) == True:
         sign_count['OVER'] = OVER_TIME
     
+    cv2.imshow("camera", src)
     return (make_state_string(sign_count))
 
 def make_state_string(sign_count):
