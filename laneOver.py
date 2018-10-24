@@ -7,19 +7,19 @@ upper_color = np.array([20,  255, 255])
 
 count = {'LANE':0}
 
-MAX_COUNT = 10
+MAX_COUNT = 5
 
 MIN_AREA = 2.5
 MAX_AREA = 30
 
 def isNotOver(frame):
-	frame = framee[frame.shape[1] / 2:,frame.shape[0] / 2:]
+    frame = frame[int(frame.shape[1] / 2):,int(frame.shape[0] / 2):]
     #resize_frame = cv2.rectangle(frame, (0,0), (int(frame.shape[1]/2)+15, int(frame.shape[0])), (0,0,0), thickness=-1)
     #resize_frame = cv2.rectangle(resize_frame, (int(resize_frame.shape[1]/2), 0), (int(resize_frame.shape[1]), int(resize_frame.shape[0]/2)), (0,0,0), thickness=-1)
-
+    
     # Convert BGR to HSV
-    hsv = cv2.cvtColor(resize_frame, cv2.COLOR_BGR2HSV)
-
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    
     # Threshold the HSV image to get only yellow colors
     img_mask = cv2.inRange(hsv, lower_color, upper_color)
 
@@ -38,6 +38,6 @@ def isNotOver(frame):
             count['LANE'] = 0
             return False
 
-        if  lane_cnt == MAX_COUNT:
+        if  count['LANE'] == MAX_COUNT:
             count['LANE'] = 0
             return True
