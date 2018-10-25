@@ -22,9 +22,9 @@ def soundPlay():
     pygame.mixer.music.stop()
 
 def windowInit(lang):
-    cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
-    #cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
-    #cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    #cv2.namedWindow('drive', cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow('drive', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('drive', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     
     pygame.init()
     pygame.mixer.music.load(lang + '/voice/turn.mp3')
