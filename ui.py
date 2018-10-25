@@ -73,10 +73,7 @@ def makeWindow(base, images, stateString):
         soundThread.start()
     
     #text area
-    if text == 'back':
-        pastePicture(base, images['BACK'], 0, 0)
-    
-    elif text == 'danger':
+    if text == 'danger':
         pastePicture(base, images['DANGER'], SIGN_WIDTH, TEXT_HEIGHT)
 
     else :

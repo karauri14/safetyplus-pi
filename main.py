@@ -7,6 +7,7 @@ import signListener
 import turnListener
 import fuelListener
 import textListener
+import backListener
 import parkingListener
 import langSelector
 import ui
@@ -23,7 +24,7 @@ def main():
     GPIO.setup(langSelector.SET_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(langSelector.SELECT_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(parkingListener.PARK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-    GPIO.setup(textListener.BACK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    GPIO.setup(backListener.BACK_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(textListener.DANGER_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
     prevString = ""
@@ -43,8 +44,20 @@ def main():
 
     #main loop
     while True:
-
-        if parkingListener.isParking() != True:
+        #parking
+        if parkingListener.isParking() == True:
+            prevString = 'parking'
+            cv2.imshow('drive', images['DOOR'])
+            if fuelListener.isFuel():
+                cv2.imshow('drive', images['REFUEL'])
+        
+        #back
+        elif backListener.isBack() == True:
+            prevString = 'back'
+            cv2.imshow('drive', images['BACK'])
+        
+        #drive
+        else :
             stateString = ""
 
             #main area
@@ -68,14 +81,7 @@ def main():
                 prevString = stateString
                 background = bgOrigin.copy()
                 ui.makeWindow(background, images, stateString)
-
-        #parking
-        else :
-            prevString = 'parking'
-            cv2.imshow('drive', images['DOOR'])
-            if fuelListener.isFuel():
-                cv2.imshow('drive', images['REFUEL'])
-
+                
         k = cv2.waitKey(1)
         if k == KEY_ESC:
             break
