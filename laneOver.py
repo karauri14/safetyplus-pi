@@ -7,7 +7,7 @@ upper_color = np.array([20,  255, 255])
 
 count = {'LANE':0}
 
-MAX_COUNT = 5
+MAX_COUNT = 9
 
 MIN_AREA = 2.5
 MAX_AREA = 30
@@ -24,7 +24,7 @@ def isNotOver(frame):
 
     # Threshold the HSV image to get only yellow colors
     img_mask = cv2.inRange(hsv, lower_color, upper_color)
-
+    #cv2.imshow('yellow', img_mask)
     image, contours, hierarchy = cv2.findContours(img_mask.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     for cnt in contours:
         area = cv2.contourArea(cnt)

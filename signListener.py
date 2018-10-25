@@ -8,7 +8,7 @@ import laneOver
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
-MIN_AREA = 500
+MIN_AREA = 100
 MAX_AREA = 3000
 MIN_RATIO = 0.8
 MAX_RATIO = 1.0
@@ -16,11 +16,11 @@ MAX_RATIO = 1.0
 SIGN = np.array(["Takeover Sign", "Negative","Slow Sign", "Stop Sign"])
 
 #delay time (ms)
-OVER_TIME = 5
+OVER_TIME = 10
 STOP_TIME = 5
 SLOW_TIME = 30
 
-SHRINK = 0.2
+SHRINK = 0.4
 
 lower_red1 = np.array([0,10,20])
 upper_red1 = np.array([20,255,255])
@@ -59,7 +59,7 @@ def classification(ROI):
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
     image, contours, hierarchy = cv2.findContours(red_segment, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
+    #cv2.imshow('red', red_segment)
     return contours
 
 def red_mask(src):
@@ -74,8 +74,6 @@ def red_mask(src):
     return mask_not
 
 def detect_contour(src, sign_count):
-    
-    gray = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
     ##method: using only red filter
     contours = find_contour_using_red_filter(src)
