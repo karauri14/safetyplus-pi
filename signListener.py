@@ -8,8 +8,8 @@ import laneOver
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
-MIN_AREA = 100
-MAX_AREA = 3000
+MIN_AREA = 500
+MAX_AREA = 4000
 MIN_RATIO = 0.8
 MAX_RATIO = 1.0
 
@@ -20,7 +20,7 @@ OVER_TIME = 10
 STOP_TIME = 5
 SLOW_TIME = 30
 
-SHRINK = 0.4
+SHRINK = 1.0
 
 lower_red1 = np.array([0,10,20])
 upper_red1 = np.array([20,255,255])
@@ -105,8 +105,8 @@ def detect_contour(src, sign_count):
                 sign_count['STOP'] = STOP_TIME
     
     #kishimon
-    if laneOver.isNotOver(src) == True:
-        sign_count['OVER'] = OVER_TIME
+    #if laneOver.isNotOver(src) == True:
+    #    sign_count['OVER'] = OVER_TIME
     
     return (make_state_string(sign_count))
 
