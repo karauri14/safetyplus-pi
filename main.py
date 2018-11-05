@@ -18,7 +18,7 @@ def main():
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(fuelListener.FUEL_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-    GPIO.setup(turnListener.SLOW_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+    #GPIO.setup(turnListener.SLOW_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.L_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(turnListener.R_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
     GPIO.setup(langSelector.SET_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)

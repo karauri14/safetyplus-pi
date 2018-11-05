@@ -13,19 +13,20 @@ L_PIN = 20
 R_PIN = 21
 
 #demo only
-SLOW_PIN = 16
-SPEED = 60
+#SLOW_PIN = 16
+#SPEED = 60
 
 #turn listener
-'''
+
 con = obd.OBD()
-'''
+
 speedRecode = []
 
 def speedLog():
     
     #demo only
-    for i in range(0, MAX_LENGTH):
+    '''
+    for i in range (0, MAX_LENGTH):
         if (GPIO.input(SLOW_PIN) == GPIO.LOW):
             speedRecode.append(SPEED - MARGIN)
         
@@ -35,21 +36,23 @@ def speedLog():
         time.sleep(0.01)
     
     '''
-    for i in range(0, MAX_LENGTH):
-        speedRecode.append(con.query(obd.commands.SPEED))
+    for i in range (0, MAX_LENGTH):
+        speed = con. query(obd.commands.SPEED).value
+        speedRecode.append(speed)
         time.sleep(0.01)
-    '''
+    
 
 def isSlow():
     speedThread = threading.Thread(target = speedLog, name="speedThread")
     speedThread.setDaemon(True)
     if speedThread.is_alive() == False:
         #demo only
-        firstSpeed = SPEED
-        '''
-        firstSpeed = con.query(obd.commands.SPEED)
-        '''
+        #firstSpeed = SPEED
+        
+        firstSpeed = con.query(obd.commands.SPEED).value
+        
         speedThread.start()
+
     for i in speedRecode:
         if (i <= (firstSpeed - MARGIN)):
             return True
