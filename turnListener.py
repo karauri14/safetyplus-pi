@@ -37,8 +37,8 @@ def speedLog():
     
     '''
     for i in range (0, MAX_LENGTH):
-        speed = con. query(obd.commands.SPEED).value
-        speedRecode.append(speed)
+        speed = con. query(obd.commands.SPEED)
+        speedRecode.append(speed.value.magnitude)
         time.sleep(0.01)
     
 
@@ -49,12 +49,12 @@ def isSlow():
         #demo only
         #firstSpeed = SPEED
         
-        firstSpeed = con.query(obd.commands.SPEED).value
+        firstSpeed = con.query(obd.commands.SPEED)
         
         speedThread.start()
 
     for i in speedRecode:
-        if (i <= (firstSpeed - MARGIN)):
+        if (i <= (firstSpeed.value.magnitude - MARGIN)):
             return True
             
     return False

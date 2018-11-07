@@ -59,7 +59,7 @@ def classification(ROI):
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
     image, contours, hierarchy = cv2.findContours(red_segment, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    #cv2.imshow('red', red_segment)
+    cv2.imshow('red', red_segment)
     return contours
 
 def red_mask(src):
@@ -138,6 +138,6 @@ def listener(video, sign_count):
     is_read, frame = video.read()
     frame = cv2.resize(frame, None, fx = SHRINK, fy = SHRINK, interpolation = cv2.INTER_LINEAR)
     
-    #cv2.imshow('camera', frame)
+    cv2.imshow('camera', frame)
     if frame is not None:
         return (detect_contour(frame, sign_count))
