@@ -59,7 +59,7 @@ def classification(ROI):
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
     image, contours, hierarchy = cv2.findContours(red_segment, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-    cv2.imshow('red', red_segment)
+    #cv2.imshow('red', red_segment)
     return contours
 
 def red_mask(src):
