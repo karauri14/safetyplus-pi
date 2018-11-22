@@ -8,7 +8,7 @@ import laneOver
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
-MIN_AREA = 500
+MIN_AREA = 100
 MAX_AREA = 4000
 MIN_RATIO = 0.8
 MAX_RATIO = 1.0
@@ -42,19 +42,17 @@ def init():
 def classification(ROI):
     
     shape = ROI.shape
+
+    ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
+    ROI_arr = np.array(ROI_arr)
     
-    if ((shape[0] >= DATASET_IMAGE_SIZE) and (shape[1] >= DATASET_IMAGE_SIZE)):
-        ROI_arr = [cv2.resize(ROI, (DATASET_IMAGE_SIZE,DATASET_IMAGE_SIZE), interpolation=cv2.INTER_CUBIC)]
-        ROI_arr = np.array(ROI_arr)
-        
-        ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
-        
-        pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
-        label = np.argmax(pred, 1)
-        predict_label = SIGN[int(label)]
+    ROI_arr = (ROI_arr-ROI_arr.mean())/(ROI_arr.max()-ROI_arr.min())
     
-        #print (predict_label)
-        return(predict_label)
+    pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
+    label = np.argmax(pred, 1)
+    predict_label = SIGN[int(label)]
+    #print (predict_label)
+    return(predict_label)
 
 def find_contour_using_red_filter(src):
     red_segment = red_mask(src)
