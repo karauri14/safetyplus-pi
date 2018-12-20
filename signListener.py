@@ -3,8 +3,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.framework import ops
 
-import laneOver
-
 IMPORT_DIR = "./savedModel"
 DATASET_IMAGE_SIZE = 32
 
