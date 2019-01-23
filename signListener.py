@@ -100,16 +100,13 @@ def detect_contour(src, sign_count):
             fileId += 1
             if sign == 'Takeover Sign':
                 sign_count['OVER'] = OVER_TIME
-                cv2.imwrite('./image/' + str(fileId) + '.png')
+                #cv2.imwrite('./image/' + str(fileId) + '.png')
             elif sign == 'Slow Sign': 
                 sign_count['SLOW'] = SLOW_TIME
-                cv2.imwrite('./image/' + str(fileId) + '.png')
+                #cv2.imwrite('./image/' + str(fileId) + '.png')
             elif sign == 'Stop Sign':
                 sign_count['STOP'] = STOP_TIME
-                cv2.imwrite('./image/' + str(fileId) + '.png')
-    #kishimon
-    #if laneOver.isNotOver(src) == True:
-    #    sign_count['OVER'] = OVER_TIME
+                #cv2.imwrite('./image/' + str(fileId) + '.png')
     
     return (make_state_string(sign_count))
 
