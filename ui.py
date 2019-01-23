@@ -40,7 +40,7 @@ def windowInit(lang):
     images['DOOR'] = cv2.imread(lang + '/img/door.png')				#full size
     images['BACK'] = cv2.imread(lang + '/img/back.png')				#full size
     images['DANGER'] = cv2.imread(lang + '/img/danger.png')			#text size
-
+    
     return images
 
 def pastePicture(background, src, x, y):
@@ -59,6 +59,7 @@ def pastePicture(background, src, x, y):
     background[0 + y : row + y, 0 + x : col + x] = dst
 
 def makeWindow(base, images, stateString):
+    
     turn, text, stop, slow, over = stateString.split(',')
     
     #main area    
@@ -90,6 +91,7 @@ def makeWindow(base, images, stateString):
         pastePicture(base, images['SLOW'], 0, SIGN_HEIGHT * 2)
     
     cv2.imshow('drive', base)
+    cv2.waitKey(1)
     
 def langSelectWindow(bgOrigin, frame, lang):
     bg = bgOrigin.copy()

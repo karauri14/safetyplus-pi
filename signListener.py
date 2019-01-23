@@ -47,7 +47,7 @@ def classification(ROI):
     pred = sess.run(GRAPH_NAME['prediction'], feed_dict={GRAPH_NAME['input_image']:ROI_arr, GRAPH_NAME['keep_prob']:1.0})
     label = np.argmax(pred, 1)
     predictLabel = SIGN[int(label)]
-    
+     
     return(predictLabel)
 
 def findContourUsingRedFilter(src):
@@ -100,7 +100,7 @@ def detectContour(src, signCount):
 def makeStateString(signCount):
     
     string = ''
-
+    '''
     for key in signCount:
         if signCount[key] != 0:
             signCount[key] -= 1
@@ -109,7 +109,26 @@ def makeStateString(signCount):
             string += ','
 
     string = string[:-1]
+    '''
     
+    if signCount['STOP'] != 0:
+        signCount['STOP'] -= 1
+        string += 'stop,'
+    else :
+        string += ','
+        
+    if signCount['SLOW'] != 0:
+        signCount['SLOW'] -= 1
+        string += 'slow,'
+    else :
+        string += ','
+        
+    if signCount['OVER'] != 0:
+        signCount['OVER'] -= 1
+        string += 'over'
+    else :
+        string += ''
+        
     return (string)
 
 def listener(video, signCount):
